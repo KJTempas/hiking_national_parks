@@ -13,7 +13,7 @@ state_codes = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID',
 def main():
     state = get_state()
     data = get_response(state)
-    get_info(data)
+    get_info(data)g
     
 
 def get_state():
