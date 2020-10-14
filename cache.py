@@ -10,10 +10,19 @@ from pymemcache import serde
 # cache is stored in binary
 #connect to memcached client
 memcache_client = Client('localhost', serde=serde.pickle_serde)
+#need 2 add methods ? one for hiking info an one for weather?
 
-def add(cachable):  #identifier is the key
-    memcache_client.set(cachable.identifier, cachable, expire = 3600) #3600sec = 1 hour
+#def add_hiking(cachable):  #identifier is the key
+def add(object, identifier,   texpiry): 
+    memcache_client.set(identifier, object, expire = 1036000) 
+
+def add_weather(cachable):
+    memcache_client.set(cachable.identifier, cachable, expire = 36000)#3600sec = 1 hour
 
 def fetch(identifier, cls):
+    cached_object = memcache_client.get(identifier)
+    return cached_object
+
+def fetch_weather(identifier, cls):
     cached_object = memcache_client.get(identifier)
     return cached_object
