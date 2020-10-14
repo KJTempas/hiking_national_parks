@@ -1,0 +1,12 @@
+
+{% if parks %}
+
+    {% for park in parks %}
+    <p>{{park}}</p>
+    {% endfor %}
+
+{% else %}
+
+    <p> no parks </p>
+
+{% endif %}
