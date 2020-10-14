@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<h1>Example Main Page</h1>
+
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+
+    <h1>Information here</h1>
+
+    <table>
+        <tr>
+            <th>State Name</th>
+            <th>Park Name</th>
+        </tr>
+        {% for user_input in user_inputs %}
+            <tr>
+                <td>{{user_input}}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+
+
+    <form action="/" method="GET" >
+        <input type="text" name="state" id ="state">
+        <input type ="submit" value="Get information"/>
+
+    </form>
+</div>
+
+
+
+
+
+
+{% endblock %}

@@ -1,3 +1,7 @@
 debug.log
 __pycache__
 *.jgp
+.DS_STORE
+env
+.idea/
+__pycache__/
