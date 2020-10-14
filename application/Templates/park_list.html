@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+
+    <h1>National Park and Trail Manager</h1>
+    {% if park_list %}
+        <table>
+            <tr>
+                <th>State Name</th>
+                <th>Park Name</th>
+            </tr>
+            {% for park in park_list %}
+                <tr>
+                    <td>{{state}}</td>
+                    <td>{{park}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No Parks</p>
+    {% endif %}
+
+</div>
+
+
+
+
+
+
+{% endblock %}

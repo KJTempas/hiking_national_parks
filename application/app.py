@@ -10,15 +10,12 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/', methods=['GET'])
+@app.route('/parks', methods=['GET'])
 def show_national_park():
 
-
-    user_input = request.form['state']
-    data = np_api.get_response(user_input)
-
-
-    return redirect(url_for('home'), user_inputs=user_input)
+    user_input = request.args.get('state')
+    park_list = np_api.get_response(user_input)
+    return render_template('park_list.html', park_list=park_list, state=user_input)
 
 
 if __name__ == "__main__":

@@ -5,3 +5,4 @@ __pycache__
 env
 .idea/
 __pycache__/
+application/.env
