@@ -40,7 +40,7 @@ def get_response(state):
         response = requests.get(url, params=query)
         response.raise_for_status()  # will raise an exception for 400(client) or 500(server) errors
         data = response.json()
-        park_list = get_info(data)
+
 
         return park_list
     except Exception as ex:
