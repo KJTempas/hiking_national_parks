@@ -11,20 +11,28 @@
     <h1>National Park and Trail Manager</h1>
 
     {% if park_list %}
+    <h2>State: {{state}}</h2>
         <table>
             <tr>
-                <th>State Name</th>
                 <th>Park Name</th>
+                <th>Park Type</th>
+                <th>Park City</th>
+                <th>Park State Code</th>
             </tr>
             {% for park in park_list %}
                 <tr>
-                    <td>{{state}}</td>
-                    <td>{{park}}</td>
+                    <td>{{park['name']}}</td>
+                    <td>{{park['type']}}</td>
+                    <td>{{park['city']}}</td>
+                    <td>{{park['state_code']}}</td>
+                    <td>
+                        <a href="/moreinfo/{{park}}">More Info</a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
     {% else %}
-        <p>No Parks</p>
+        <p>No Parks available at {{state}}</p>
     {% endif %}
 
 </div>

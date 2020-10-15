@@ -4,12 +4,9 @@ import logging
 from dotenv import load_dotenv
 from .state_name_and_code import us_state_abbrev
 
-from . import state_name_and_code as state_obj
-
 load_dotenv('application/.env')
 
 NTL_PARK_KEY = os.environ.get('NATLPARKS_KEY')
-print(NTL_PARK_KEY)
 API_URL = 'https://developer.nps.gov/api/v1/parks'
 
 # Logger
@@ -41,19 +38,27 @@ def get_response(state):
 
 
 def get_info(data):
+    #
+
     park_list = list()
     list_of_parks = data['data']
     for park in list_of_parks:
-        parkName = park['fullName']
-        lat = park['latitude']
-        longitude = park['longitude']
-        designation = park['designation']
-        city = park['addresses'][0]['city']
-        stateCode = park['addresses'][0]['stateCode']
-        print(parkName)
-        print(park_list)
-        park_list.append(parkName)
+        park_list_w_info = dict()
+        # parkName = park['fullName']
+        # lat = park['latitude']
+        # longitude = park['longitude']
+        # designation = park['designation']
+        # city = park['addresses'][0]['city']
+        # stateCode = park['addresses'][0]['stateCode']
+        park_list_w_info['name'] = park['fullName']
+        park_list_w_info['lat'] = park['latitude']
+        park_list_w_info['lon'] = park['longitude']
+        park_list_w_info['type'] = park['designation']
+        park_list_w_info['city'] = park['addresses'][0]['city']
+        park_list_w_info['state_code'] = park['addresses'][0]['stateCode']
+        park_list.append(park_list_w_info)
+
+
 
     return park_list
-    # print(
-    #     f'{parkName}, located in {city}, {stateCode}, is a {designation}.')  # '; a few activities {list_of_act[0:5]} Image caption: {image_caption} Location: latitude {lat} and longitude{longitude}  \n')
+

@@ -8,18 +8,8 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def home():
     state_list = natlParks_api.get_all_state_name()
-    test_name = request.args.get('states')
 
-    # if request.method == 'GET':
-    #     test_name = request.args.get('states')
-    #     print(test_name)
-    #     return render_template(redirect('/'), states=state_list, test=test_name)
-    # else:
-    #
-
-    return render_template('index.html', states=state_list, test=test_name)
-
-
+    return render_template('index.html', states=state_list)
 
 
 @app.route('/parks', methods=['GET'])
@@ -29,6 +19,8 @@ def show_national_park():
     user_input_1 = request.args.get('states')
     park_list = natlParks_api.get_response(user_input_1.lower())
     return render_template('park_list.html', park_list=park_list, state=user_input_1)
+
+# @app.route('/moreinfo/')
 
 
 if __name__ == "__main__":
