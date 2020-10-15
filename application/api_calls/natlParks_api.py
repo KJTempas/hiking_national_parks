@@ -18,10 +18,12 @@ state_name = us_state_abbrev.keys()
 
 
 def get_all_state_name():
-    state_list = us_state_abbrev.values()
+    state_list = us_state_abbrev.keys()
 
     return state_list
 
+def get_state_code(state_name):
+    return us_state_abbrev.get(state_name)
 
 def get_response(state):
     try:

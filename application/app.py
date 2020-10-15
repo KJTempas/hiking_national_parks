@@ -16,9 +16,10 @@ def home():
 def show_national_park():
 
     # TODO Some state like CA will have out of range list
-    user_input_1 = request.args.get('states')
-    park_list = natlParks_api.get_response(user_input_1.lower())
-    return render_template('park_list.html', park_list=park_list, state=user_input_1)
+    state_input = request.args.get('states')
+    state_code = natlParks_api.get_state_code(state_input)
+    park_list = natlParks_api.get_response(state_code.lower())
+    return render_template('park_list.html', park_list=park_list, state=state_input)
 
 # @app.route('/moreinfo/')
 
