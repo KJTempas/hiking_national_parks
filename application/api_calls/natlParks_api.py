@@ -64,4 +64,3 @@ def get_info(data):
 
 
     return park_list
-

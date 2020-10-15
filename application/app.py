@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from api_calls import natlParks_api
+from api_calls import natlParks_api, hiking_api
 
 # from models import *
 app = Flask(__name__)
@@ -21,9 +21,12 @@ def show_national_park():
     return render_template('park_list.html', park_list=park_list, state=state_input)
 
 
-@app.route('/moreinfo/{{park}}')
-def get_trail(park):
-    return render_template('hikes_weather.html', park=park)
+@app.route('/moreinfo/<park>/<lat>/<lon>')
+def get_trail(park, lat, lon):
+   
+    trail_list = hiking_api.get_trails(lat, lon)
+
+    return render_template('hikes_weather.html', park=park, trail_list=trail_list)
 
 
 if __name__ == "__main__":
