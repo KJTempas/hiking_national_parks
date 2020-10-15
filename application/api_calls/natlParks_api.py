@@ -55,6 +55,7 @@ def get_info(data):
         park_list_w_info['name'] = park['fullName']
         park_list_w_info['lat'] = park['latitude']
         park_list_w_info['lon'] = park['longitude']
+        park_list_w_info['lat_lon'] = str(park['latLong'])
         park_list_w_info['type'] = park['designation']
         park_list_w_info['city'] = park['addresses'][0]['city']
         park_list_w_info['state_code'] = park['addresses'][0]['stateCode']
