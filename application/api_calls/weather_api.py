@@ -15,20 +15,7 @@ log = logging.getLogger('root')
 # CONSTANT
 WEATHER_KEY = os.environ.get('WEATHER_KEY')
 
-WEATHER_KEY = '7ca53d81fe59299ddad5356d36a03cb8'
 API_URL = 'https://api.openweathermap.org/data/2.5/onecall?'
-
-
-def main():
-    if WEATHER_KEY is not None:
-        # This lat and long should be passed from the program itself.
-        lat, long = get_location()
-        weather, errors = get_weather(lat, long)
-
-        if weather is None:
-            print('No forecast or invalid location......')
-        else:
-            weather_list = store_data(weather)
 
 
 def store_data(weather):
@@ -55,17 +42,6 @@ def store_data(weather):
     return weather_list
 
 
-def get_location(lat=None, long=None):
-    while lat is None:
-
-        lat = input('Please enter the latitude of the location')
-
-    while long is None:
-
-        long = input('Please enter the longitude of the location')
-
-    return lat, long
-
 
 def get_weather(lat, long):
     params = {'lat': lat, 'lon': long, 'exclude': 'current,alerts,hourly,minutely', 'units': 'imperial',
@@ -76,12 +52,15 @@ def get_weather(lat, long):
     try:
         response.raise_for_status()
         data = response.json()
-        return data, None
+
+        weather_list = store_data(data)
+        return weather_list
+        
 
     except Exception as e:
         log.exception(f'Error occurred. More detail: {e}')
         log.exception(f'Error Message from request: {response.text}')
-        return None, e
+        return None
 
 
-main()
+

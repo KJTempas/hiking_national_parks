@@ -25,7 +25,23 @@
         <p>No Trails available at {{park}}</p>
     {% endif %}
 
+    {% if trail_list %}
+        <h2>Park Name: {{park}}</h2>
+            <table>
+                <tr>
+                    <th>Weather Detail</th>
+                </tr>
+                {% for weather in weather_list %}
+                    <tr>
+                        <td>{{weather}}</td>
 
+
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No Weather Forecast available at {{park}}</p>
+        {% endif %}
 
 </div>
 

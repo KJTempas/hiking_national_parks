@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
-from api_calls import natlParks_api, hiking_api
+from api_calls import natlParks_api, hiking_api, weather_api
 
 # from models import *
 app = Flask(__name__)
-
+# TODO need to validate if the parklist, weatherlist and traillist has data or no
 
 @app.route('/', methods=['GET'])
 def home():
@@ -24,9 +24,12 @@ def show_national_park():
 
 @app.route('/moreinfo/<park>/<lat>/<lon>')
 def get_trail(park, lat, lon):
-    trail_list = hiking_api.get_trails(lat, lon)
 
-    return render_template('hikes_weather.html', park=park, trail_list=trail_list)
+    trail_list = hiking_api.get_trails(lat, lon)
+    weather_list = weather_api.get_weather(lat, lon)
+
+
+    return render_template('hikes_weather.html', park=park, trail_list=trail_list, weather_list=weather_list)
 
 
 if __name__ == "__main__":
