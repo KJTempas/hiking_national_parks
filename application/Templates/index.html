@@ -14,12 +14,26 @@
 
     <h2>Please enter the state that you want to go</h2>
     <small>Here we need to put a dropdown menu to drop down a selection of state code.</small>
+<!--    <form>-->
+<!--        <select id="states" name="states" method="GET" action="/">-->
+<!--            {% for state in states %}-->
+<!--                <option value="{{state}}">{{state}}</option>-->
+<!--            {% endfor %}-->
+<!--        </select>-->
+<!--    </form>-->
+    {{ test }}
+
     <br>
     <br>
     <div class="form">
         <form action="/parks" method="GET" >
-        <input type="text" name="state" id ="state">
-        <input type ="submit" value="Get information"/>
+            <select id="states" name="states" method="GET" action="/">
+            {% for state in states %}
+                <option value="{{state}}">{{state}}</option>
+            {% endfor %}
+            </select>
+<!--            <input type="text" name="state" id ="state">-->
+            <input type ="submit" value="Get information"/>
         </form>
     </div>
 
