@@ -12,6 +12,7 @@ def home():
     return render_template('index.html', states=state_list)
 
 
+# TODO: Modified the route based on the selected state
 @app.route('/parks', methods=['GET'])
 def show_national_park():
     # TODO Some state like CA will have out of range list
@@ -23,7 +24,6 @@ def show_national_park():
 
 @app.route('/moreinfo/<park>/<lat>/<lon>')
 def get_trail(park, lat, lon):
-   
     trail_list = hiking_api.get_trails(lat, lon)
 
     return render_template('hikes_weather.html', park=park, trail_list=trail_list)
