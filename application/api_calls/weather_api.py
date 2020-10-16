@@ -60,7 +60,6 @@ def get_weather(lat, long):
     except Exception as e:
         log.exception(f'Error occurred. More detail: {e}')
         log.exception(f'Error Message from request: {response.text}')
-        return None
-
+        raise e
 
 

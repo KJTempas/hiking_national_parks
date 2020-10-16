@@ -18,8 +18,8 @@
     <div class="form">
         <form action="/parks" method="GET" >
             <select id="states" name="states" method="GET" action="/">
-            {% for state in states %}
-                <option value="{{state}}">{{state}}</option>
+            {% for state_name, state_abbrev in states_dict.items() %}
+                <option value="{{state_abbrev}}">{{state_name}}</option>
             {% endfor %}
             </select>
             <input type ="submit" value="Get information"/>

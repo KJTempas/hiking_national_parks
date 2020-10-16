@@ -39,16 +39,13 @@
                     <tr>
                         <td>{{weather['date']}}</td>
                         <td>
-                            Min Temperature: {{weather['temp']['min']}}F<br>
-                            Max Temperature: {{weather['temp']['max']}}F<br>
-<!--                            Morning Temperature: {{weather['temp']['morn']}}F<br>-->
-<!--                            Day Temperature: {{weather['temp']['day']}}F<br>-->
-<!--                            Evening Temperature: {{weather['temp']['eve']}}F<br>-->
-<!--                            Night Temperate: {{weather['temp']['night']}}F<br>-->
+                            Min: {{weather['temp']['min']}}F<br>
+                            Max: {{weather['temp']['max']}}F<br>
+
                         </td>
                         <td>{{weather['desc']}}</td>
                         <td>{{weather['humidity']}}</td>
-                    {% if weather['rain'] is defined %}}
+                    {% if weather['rain'] is defined %}
                         <td>{{weather['rain']}}</td>
                     {% else %}
                         <td>N/A</td>
