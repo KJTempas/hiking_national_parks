@@ -2,6 +2,7 @@ import os
 import requests
 import logging
 from dotenv import load_dotenv
+import re
 
 load_dotenv('application/.env')
 
@@ -36,7 +37,8 @@ def get_info(data):
             park_list_w_info = dict()
 
             if len(park['fullName']) != 0:
-                park_list_w_info['name'] = park['fullName']
+                modified_name = " ".join(re.findall("[a-zA-Z]+", park['fullName']))
+                park_list_w_info['name'] = modified_name
 
             if len(park['latitude']) != 0:
                 park_list_w_info['lat'] = park['latitude']

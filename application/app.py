@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 from api_calls import natlParks_api, hiking_api, weather_api, state_name_and_code
-
+import logging
+# Logger
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s', datefmt='%d-%m-%y %H:%M:%S')
+log = logging.getLogger('root')
 # from models import *
 app = Flask(__name__)
 # TODO need to validate if the parklist, weatherlist and traillist has data or no
@@ -25,12 +28,16 @@ def show_national_park():
 
 @app.route('/moreinfo/<park>/<lat>/<lon>')
 def get_trail(park, lat, lon):
+    try:
+        trail_list = hiking_api.get_trails(lat, lon)
+        weather_list = weather_api.get_weather(lat, lon)
 
-    trail_list = hiking_api.get_trails(lat, lon)
-    weather_list = weather_api.get_weather(lat, lon)
 
-
-    return render_template('hikes_weather.html', park=park, trail_list=trail_list, weather_list=weather_list)
+        return render_template('hikes_weather.html', park=park, trail_list=trail_list, weather_list=weather_list)
+    except Exception as e:
+        log.debug(e)
+        log.debug(lat)
+        log.debug(lon)
 
 
 if __name__ == "__main__":
