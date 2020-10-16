@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<h1>National Park and Trail Manager</h1>
+
+
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+
+    <h2>Please select the state that you want to go</h2>
+    <br>
+    <br>
+    <div class="form">
+        <form action="/parks" method="GET" >
+            <select id="states" name="states" method="GET" action="/">
+            {% for state_name, state_abbrev in states_dict.items() %}
+                <option value="{{state_abbrev}}">{{state_name}}</option>
+            {% endfor %}
+            </select>
+            <input type ="submit" value="Get information"/>
+        </form>
+    </div>
+
+</div>
+
+
+
+
+
+
+{% endblock %}

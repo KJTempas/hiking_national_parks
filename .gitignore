@@ -1,6 +1,15 @@
 debug.log
 __pycache__
 *.jgp
-
+cache
 /env
-/.vscode
+.vscode
+.DS_STORE
+.idea/
+application/.env
+
+
+
+
+
+
