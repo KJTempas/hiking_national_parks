@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+<div class="content">
+
+    <h1>National Park and Trail Manager</h1>
+
+    {% if trail_list %}
+    <h2>Park Name: {{park}}</h2>
+        <table>
+            <tr>
+                <th>Trail Name</th>
+            </tr>
+            {% for trail in trail_list %}
+                <tr>
+                    <td>{{trail}}</td>
+
+
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No Trails available at {{park}}</p>
+    {% endif %}
+
+    {% if trail_list %}
+        <h2>Park Name: {{park}}</h2>
+            <table>
+                <tr>
+                    <th>Forecast Date</th>
+                    <th>Temperature</th>
+                    <th>Description</th>
+                    <th>Humidity</th>
+                    <th>Rain</th>
+                </tr>
+                {% for weather in weather_list %}
+                    <tr>
+                        <td>{{weather['date']}}</td>
+                        <td>
+                            Min: {{weather['temp']['min']}}F<br>
+                            Max: {{weather['temp']['max']}}F<br>
+
+                        </td>
+                        <td>{{weather['desc']}}</td>
+                        <td>{{weather['humidity']}}</td>
+                    {% if weather['rain'] is defined %}
+                        <td>{{weather['rain']}}</td>
+                    {% else %}
+                        <td>N/A</td>
+                    {% endif %}
+
+
+
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No Weather Forecast available at {{park}}</p>
+        {% endif %}
+
+</div>
+
+
+
+
+
+
+{% endblock %}

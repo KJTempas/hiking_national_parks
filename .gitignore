@@ -1,5 +1,14 @@
 debug.log
 __pycache__
 *.jgp
+flask-build
+.DS_STORE
+env
+.idea/
+__pycache__/
+application/.env
+.vscode/
+
 /env
 .vscode
+master
