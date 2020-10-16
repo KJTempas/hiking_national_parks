@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+
+    <h1>National Park and Trail Manager</h1>
+
+    {% if park_list %}
+    <h2>State: {{state}}</h2>
+        <table>
+            <tr>
+                <th>Park Name</th>
+                <th>Park Type</th>
+                <th>Park City</th>
+                <th>Park State Code</th>
+            </tr>
+            {% for park in park_list %}
+                <tr>
+                {% if park['name'] is defined %}
+                    <td>{{park['name']}}</td>
+                {% else %}
+                    <td>N/A</td>
+                {% endif %}
+                {% if park['designation'] is defined %}
+                    <td>{{park['designation']}}</td>
+                {% else %}
+                    <td>N/A</td>
+                {% endif %}
+                {% if park['city'] is defined %}
+                    <td>{{park['city']}}</td>
+                {% else %}
+                    <td>N/A</td>
+                {% endif %}
+
+                {% if park['state_code'] is defined %}
+                    <td>{{park['state_code']}}</td>
+                {% else %}
+                    <td>N/A</td>
+                {% endif %}
+                    <td>
+                        <a href="/moreinfo/{{park['name']}}/{{park['lat']}}/{{park['lon']}}">More Info</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No Parks available at {{state}}</p>
+    {% endif %}
+
+</div>
+
+
+
+
+
+
+{% endblock %}
