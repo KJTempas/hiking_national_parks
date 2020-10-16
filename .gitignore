@@ -1,6 +1,10 @@
 debug.log
 __pycache__
 *.jgp
+cache
+/env
+.vscode
+
 flask-build
 .DS_STORE
 env
@@ -11,4 +15,5 @@ application/.env
 
 /env
 .vscode
+master
 master
