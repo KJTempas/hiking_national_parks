@@ -3,6 +3,7 @@ import requests
 import logging
 from dotenv import load_dotenv
 import re
+import cache
 
 load_dotenv('application/.env')
 
@@ -14,18 +15,27 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(mes
 log = logging.getLogger('root')
 
 
-def get_response(state):
-    try:
-        query = {'stateCode': state, 'api_key': NTL_PARK_KEY}
-        response = requests.get(API_URL, params=query)
-        response.raise_for_status()  # will raise an exception for 400(client) or 500(server) errors
-        data = response.json()
-        park_list = get_info(data)
-
-        return park_list
-    except Exception as ex:
-        log.exception(ex)
-        raise ex
+def get_response(state_input):
+    #see if park_list is in cache; otherwise, do API call
+    #identifier is state_input
+    #if cached_park_list := cache.fetch(state_input.lower(), park_list):
+    if cached_park_list := cache.fetch(state_input.lower()):
+        print('Return from Cache')  #this will be deleted later
+        return cached_park_list
+    else:
+        print('return from API call')
+        try:
+            query = {'stateCode': state_input, 'api_key': NTL_PARK_KEY}
+            response = requests.get(API_URL, params=query)
+            response.raise_for_status()  # will raise an exception for 400(client) or 500(server) errors
+            data = response.json()
+            park_list = get_info(data)
+            #cache the data (identifier, object, seconds to cache (1 month)
+            cache.add(state_input, park_list, 2628000 )
+            return park_list
+        except Exception as ex:
+            log.exception(ex)
+            raise ex
 
 
 def get_info(data):

@@ -2,6 +2,7 @@ import requests
 import os
 import logging
 from dotenv import load_dotenv
+import cache
 
 load_dotenv('application/.env')
 
@@ -15,18 +16,26 @@ log = logging.getLogger('root')
 
 
 def get_trails(lat, lon):
-    try:
-        query = {'lat': lat, 'lon': lon, 'key': HIKING_KEY}
+    #see if trail_list is in cache; otherwise, do API call
+    #identifier is lat/long
+    if cached_trail_list := cache.fetch((lat,lon)):
+        print('Return from Cache')  #this will be deleted later
+        return cached_trail_list
+    else:
+        print('new API call')
 
-        response = requests.get(HIKING_URL, params=query)
-        response.raise_for_status()  # will raise an exception for 400(client) or 500(server) errors
-        data = response.json()
-        trail_list = list()
-        list_of_trails = data['trails']
+        try:
+            query = {'lat': lat, 'lon': lon, 'key': HIKING_KEY}
 
-        for trail in list_of_trails:
-            trail_name = trail['name']
-            trail_list.append(trail_name)
+            response = requests.get(HIKING_URL, params=query)
+            response.raise_for_status()  # will raise an exception for 400(client) or 500(server) errors
+            data = response.json()
+            trail_list = list()
+            list_of_trails = data['trails']
+
+            for trail in list_of_trails:
+                trail_name = trail['name']
+                trail_list.append(trail_name)
 
         # for x in range(-1, 5):
         #     trail_name = data['trails'][x]['name']
@@ -38,7 +47,10 @@ def get_trails(lat, lon):
         #     #
         # print(
         #     f'Name: {trail_name} | Trail summary: {trail_summary} | Trail length: {trail_length} | Trail difficulty: {trail_difficulty} | Trail img: {trail_img}')
-        return trail_list
-    except Exception as e:
-        log.exception(e)
-        raise e
+            
+            #add data to cache - expires in 1 month
+            cache.add((lat,lon), trail_list, 2628000 )
+            return trail_list
+        except Exception as e:
+            log.exception(e)
+            raise e
