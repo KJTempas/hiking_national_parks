@@ -53,10 +53,10 @@ def get_weather(lat, lon):
     #see if trail_list is in cache; otherwise, do API call
     #identifier is lat/long
     if cached_weather_list := cache.fetch((lat,lon)):
-        print('Return from Cache')  #this will be deleted later
+        log.info('Return from Cache')  #this will be deleted later
         return cached_weather_list
     else:
-        print('new API call')
+        log.info('new API call')
         try:
             response.raise_for_status()
             data = response.json()

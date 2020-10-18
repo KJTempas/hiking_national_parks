@@ -20,10 +20,10 @@ def get_response(state_input):
     #identifier is state_input
     #if cached_park_list := cache.fetch(state_input.lower(), park_list):
     if cached_park_list := cache.fetch(state_input.lower()):
-        print('Return from Cache')  #this will be deleted later
+        log.info('Return from Cache')  #this will be deleted later
         return cached_park_list
     else:
-        print('return from API call')
+        log.info('return from API call')
         try:
             query = {'stateCode': state_input, 'api_key': NTL_PARK_KEY}
             response = requests.get(API_URL, params=query)

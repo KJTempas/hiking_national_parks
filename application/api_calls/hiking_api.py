@@ -19,10 +19,10 @@ def get_trails(lat, lon):
     #see if trail_list is in cache; otherwise, do API call
     #identifier is lat/long
     if cached_trail_list := cache.fetch((lat,lon)):
-        print('Return from Cache')  #this will be deleted later
+        log.info('Return from Cache')  #this will be deleted later
         return cached_trail_list
     else:
-        print('new API call')
+        log.info('new API call')
 
         try:
             query = {'lat': lat, 'lon': lon, 'key': HIKING_KEY}
