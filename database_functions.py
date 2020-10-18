@@ -12,7 +12,7 @@ def add_saved_trail(name, leng, dif, summ, natl_pk, state):
 def delete_trail_by_id(trail_id):
 
     query = Trails.delete().where(Trails.trail_id == trail_id)
-    query.excute()
+    query.execute()
 
 def delete_everything():
     """ Deletes all trails from database"""
