@@ -68,8 +68,9 @@
         <h4><i>No Weather Forecast available at {{park}}</i></h4>
         {% endif %}
 
-    <form method="POST">
-        <button type="back" name="back-page" value="back-page">Back to Home Page</button>
+    <form method="POST" >
+        <button type="back" name="back-page" value="back-page">Back to Previous Page</button>
+        <input type="hidden" name="state" value="{{ state }}" />
     </form>
 
 </div>

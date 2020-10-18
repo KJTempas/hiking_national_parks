@@ -16,13 +16,23 @@
             <tr>
                 <th>Park Name</th>
                 <th>Park Type</th>
+                <th>City</th>
             </tr>
             {% for park in park_list %}
                 <tr>
                     <td>{{park['name']}}</td>
+                    {% if park['designation'] is defined %}
                     <td>{{park['designation']}}</td>
+                    {% else %}
+                        <td>N/A</td>
+                    {% endif %}
+                    {% if park['city'] is defined %}
+                    <td>{{park['city']}}</td>
+                    {% else %}
+                        <td>N/A</td>
+                    {% endif %}
                     <td>
-                        <a href="/moreinfo/{{park['name']}}/{{park['lat']}}/{{park['lon']}}">More Info</a>
+                        <a href="/moreinfo/{{state}}/{{park['name']}}/{{park['lat']}}/{{park['lon']}}">More Info</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -30,6 +40,11 @@
     {% else %}
         <p>No Parks available at {{state}}</p>
     {% endif %}
+
+    <form method="POST" >
+        <button type="back" name="back-page" value="back-page">Back to Previous Page</button>
+
+    </form>
 
 </div>
 
