@@ -2,6 +2,8 @@ import requests
 import os
 import logging
 from dotenv import load_dotenv
+import cache
+from models import List
 
 load_dotenv('application/.env')
 
@@ -14,6 +16,7 @@ log = logging.getLogger('root')
 
 
 def get_trails(lat, lon):
+
     # see if trail_list is in cache; otherwise, do API call
     # identifier is lat/long
     if cached_trail_list := cache.fetch((lat, lon)):
@@ -21,6 +24,7 @@ def get_trails(lat, lon):
         return cached_trail_list
     else:
         log.info('new API call')
+
         try:
             query = {'lat': lat, 'lon': lon, 'key': HIKING_KEY}
 
@@ -29,6 +33,7 @@ def get_trails(lat, lon):
             data = response.json()
             trail_list = list()
             list_of_trails = data['trails']
+
 
             if list_of_trails:
                 for trail in list_of_trails:
@@ -53,8 +58,10 @@ def get_trails(lat, lon):
         #     #
         # print(
         #     f'Name: {trail_name} | Trail summary: {trail_summary} | Trail length: {trail_length} | Trail difficulty: {trail_difficulty} | Trail img: {trail_img}')
-                        # add data to cache - expires in 1 month
-            cache.add((lat, lon), trail_list, 2628000)
+ 
+            #add data to cache - expires in 1 month
+            cache.add((lat,lon), trail_list, 2628000 )
+
             return trail_list
         except Exception as e:
             log.exception(e)

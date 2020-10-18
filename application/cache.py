@@ -24,7 +24,7 @@ def add(object, identifier, expiry):
     memcache_client.set(identifier, object, expire =expiry) 
 
 
-def fetch(identifier, cls):
+def fetch(identifier):
     cached_object = memcache_client.get(identifier) #.get(key)
     return cached_object
 
