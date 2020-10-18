@@ -4,6 +4,7 @@ import logging
 from dotenv import load_dotenv
 import re
 import cache
+from models import List
 
 load_dotenv('application/.env')
 

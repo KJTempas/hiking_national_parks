@@ -6,6 +6,7 @@ from pprint import pprint
 import re
 from datetime import datetime
 import cache
+from models import List
 
 load_dotenv('application/.env')
 

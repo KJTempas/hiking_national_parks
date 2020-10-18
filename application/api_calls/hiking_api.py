@@ -3,6 +3,7 @@ import os
 import logging
 from dotenv import load_dotenv
 import cache
+from models import List
 
 load_dotenv('application/.env')
 
