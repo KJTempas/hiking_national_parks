@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 load_dotenv('application/.env')
 
 HIKING_KEY = os.environ.get('HIKING_KEY')
-
 HIKING_URL = 'https://www.hikingproject.com/data/get-trails'
 
 # Logger
@@ -24,9 +23,18 @@ def get_trails(lat, lon):
         trail_list = list()
         list_of_trails = data['trails']
 
-        for trail in list_of_trails:
-            trail_name = trail['name']
-            trail_list.append(trail_name)
+        if list_of_trails:
+            for trail in list_of_trails:
+                trail_list_w_info = dict()
+                if trail['name'] and trail['length'] and trail['difficulty'] and trail['summary'] :
+
+                    trail_list_w_info['name'] = trail['name']
+                    trail_list_w_info['length'] = trail['length']
+                    trail_list_w_info['difficulty'] = trail['difficulty']
+                    trail_list_w_info['summary'] = trail['summary']
+
+                    trail_list.append(trail_list_w_info)
+
 
         # for x in range(-1, 5):
         #     trail_name = data['trails'][x]['name']
@@ -38,6 +46,7 @@ def get_trails(lat, lon):
         #     #
         # print(
         #     f'Name: {trail_name} | Trail summary: {trail_summary} | Trail length: {trail_length} | Trail difficulty: {trail_difficulty} | Trail img: {trail_img}')
+
         return trail_list
     except Exception as e:
         log.exception(e)

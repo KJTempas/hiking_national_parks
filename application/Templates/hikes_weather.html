@@ -12,11 +12,17 @@
         <table>
             <tr>
                 <th>Trail Name</th>
+                <th>Trail Summary</th>
+                <th>Trail Length</th>
+                <th>Trail difficulty</th>
+
             </tr>
             {% for trail in trail_list %}
                 <tr>
-                    <td>{{trail}}</td>
-
+                    <td>{{trail['name']}}</td>
+                    <td>{{trail['summary']}}</td>
+                    <td>{{trail['length']}}</td>
+                    <td>{{trail['difficulty']}}</td>
 
                 </tr>
             {% endfor %}
@@ -25,7 +31,7 @@
         <p>No Trails available at {{park}}</p>
     {% endif %}
 
-    {% if trail_list %}
+    {% if weather_list %}
         <h2>Park Name: {{park}}</h2>
             <table>
                 <tr>
