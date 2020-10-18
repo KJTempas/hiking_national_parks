@@ -9,26 +9,28 @@
 
     {% if trail_list %}
     <h2>Park Name: {{park}}</h2>
-        <table>
-            <tr>
-                <th>Trail Name</th>
-                <th>Trail Summary</th>
-                <th>Trail Length</th>
-                <th>Trail difficulty</th>
-
-            </tr>
-            {% for trail in trail_list %}
+        <form method="POST">
+            <table>
                 <tr>
-                    <td>{{trail['name']}}</td>
-                    <td>{{trail['summary']}}</td>
-                    <td>{{trail['length']}}</td>
-                    <td>{{trail['difficulty']}}</td>
+                    <th>Trail Name</th>
+                    <th>Trail Summary</th>
+                    <th>Trail Length</th>
 
                 </tr>
-            {% endfor %}
-        </table>
+                {% for trail in trail_list %}
+                    <tr>
+                        <td>{{trail['name']}}</td>
+                        <td>{{trail['summary']}}</td>
+                        <td>{{trail['length']}}</td>
+
+                        <td><button btn style="border:none; border-bottom: 1px solid black;">Save</button></td>
+                        <input type="hidden" name="trail" value="{{ trail }}" />
+                    </tr>
+                {% endfor %}
+            </table>
+        </form>
     {% else %}
-        <p>No Trails available at {{park}}</p>
+    <h4><i>No Trails available at {{park}}</i></h4>
     {% endif %}
 
     {% if weather_list %}
@@ -63,8 +65,12 @@
                 {% endfor %}
             </table>
         {% else %}
-            <p>No Weather Forecast available at {{park}}</p>
+        <h4><i>No Weather Forecast available at {{park}}</i></h4>
         {% endif %}
+
+    <form method="POST">
+        <button type="back" name="back-page" value="back-page">Back to Home Page</button>
+    </form>
 
 </div>
 
