@@ -15,16 +15,21 @@
                     <th>Trail Name</th>
                     <th>Trail Summary</th>
                     <th>Trail Length</th>
+                    <th>  </th>
+                    <th>  </th>
 
                 </tr>
                 {% for trail in trail_list %}
                     <tr>
-                        <td>{{trail['name']}}</td>
+                        <td name="trailname">{{trail['name']}}</td>
+
                         <td>{{trail['summary']}}</td>
                         <td>{{trail['length']}}</td>
 
-                        <td><button btn style="border:none; border-bottom: 1px solid black;">Save</button></td>
-                        <input type="hidden" name="trail" value="{{ trail }}" />
+                        <td ><button btn style="border:none; border-bottom: 1px solid black;" value="{{trail['name']}}">Save</button>
+
+                        </td>
+
                     </tr>
                 {% endfor %}
             </table>
