@@ -55,7 +55,8 @@ def get_weather(lat, lon):
 
     #see if weather_list is in cache; otherwise, do API call
     #identifier is lat/long
-    if cached_weather_list := cache.fetch((lat,lon)):
+    cached_weather_list = cache.fetch((lat,lon))
+    if cached_weather_list:
         log.info('Return from Cache')  
         return cached_weather_list
     else:
@@ -66,9 +67,9 @@ def get_weather(lat, lon):
 
             weather_list = store_data(data)
         #cache new weather_list for 1 day
-            weather_list = List(weather_list, (lat,lon), now_plus_expiry)
+            weather_list = List(weather_list, now_plus_expiry)
             #cache.add((lat,lon), weather_list)
-            cache.add(weather_list)
+            cache.add((lat,lon),weather_list)
             return weather_list
             
         except Exception as e:

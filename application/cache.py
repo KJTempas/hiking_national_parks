@@ -20,8 +20,8 @@ need to type 'memcached' in terminal to activate memcache
 """
 # in controller this fetch() will be called, and if the result is None, a new API call 
 #will be made; when the data is retrieved, add() will be called to set it in the cache
-def add( identifier, object, expire): 
-    memcache_client.set(identifier, object, expire =expire) 
+def add(List): 
+    memcache_client.set(List.identifier, object, List.expiry) 
 
 
 def fetch(identifier, cls):

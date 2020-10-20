@@ -23,7 +23,10 @@ log = logging.getLogger('root')
 def get_trails(lat, lon):
     #see if trail_list is in cache; otherwise, do API call
     #identifier is lat/long
-    if cached_trail_list := cache.fetch((lat,lon)):
+    #if cached_trail_list := cache.fetch((lat,lon)):
+    
+    cached_trail_list = cache.fetch((lat,lon))
+    if cached_trail_list:
         log.info('Return from Cache')  
         return cached_trail_list
     else:
@@ -53,8 +56,8 @@ def get_trails(lat, lon):
         #     f'Name: {trail_name} | Trail summary: {trail_summary} | Trail length: {trail_length} | Trail difficulty: {trail_difficulty} | Trail img: {trail_img}')
             
             #add data to cache - expires in 1 month
-            trail_list = List(trail_list, (lat,lon), now_plus_expiry)
-            cache.add( trail_list)
+            trail_list = List(trail_list, now_plus_expiry)
+            cache.add((lat,lon), trail_list)
             return trail_list
         except Exception as e:
             log.exception(e)
