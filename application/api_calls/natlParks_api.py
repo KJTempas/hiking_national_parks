@@ -4,8 +4,11 @@ import logging
 from dotenv import load_dotenv
 import re
 import cache
-from models import List
+from ..models import List
+from datetime import datetime
+import time
 
+cached_time = 2628000  #one month
 load_dotenv('application/.env')
 
 NTL_PARK_KEY = os.environ.get('NATLPARKS_KEY')
@@ -20,7 +23,7 @@ def get_response(state_input):
     #see if park_list is in cache; otherwise, do API call
     #identifier is state_input
     #if cached_park_list := cache.fetch(state_input.lower(), park_list):
-    if cached_park_list := cache.fetch(state_input.lower()):
+    if cached_park_list := cache.fetch(state_input.lower(), List):
         log.info('Return from Cache')  #this will be deleted later
         return cached_park_list
     else:
@@ -32,7 +35,9 @@ def get_response(state_input):
             data = response.json()
             park_list = get_info(data)
             #cache the data (identifier, object, seconds to cache (1 month)
-            cache.add(state_input, park_list, 2628000 )
+            park_list = List(state_input, park_list, now_plus_expiry())
+            cache.add(park_list)
+            #cache.add(state_input, park_list)
             return park_list
         except Exception as ex:
             log.exception(ex)
@@ -71,3 +76,7 @@ def get_info(data):
     except Exception as e:
         log.exception(e)
         raise e
+
+def now_plus_expiry():
+    now =time.time()
+    return now + cached_time

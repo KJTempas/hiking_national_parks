@@ -26,7 +26,6 @@ class Trails(Model):
 
 
 
-
 db.connect()
 db.create_tables([Trails])
 
