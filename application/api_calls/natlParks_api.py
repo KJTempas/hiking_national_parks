@@ -3,8 +3,8 @@ import requests
 import logging
 from dotenv import load_dotenv
 import re
-from application import cache
-from ..models import List
+
+from cache import cache, cache_list
 from datetime import datetime
 import time
 
@@ -23,7 +23,7 @@ def get_response(state_input):
     #see if park_list is in cache; otherwise, do API call
     #identifier is state_input
     
-    cached_park_list = cache.fetch(state_input, List)
+    cached_park_list = cache.fetch(state_input, cache_list.data_list)
     
     if cached_park_list:
         log.info('Return from Cache')  #this will be deleted later
@@ -37,7 +37,7 @@ def get_response(state_input):
             data = response.json()
             park_list = get_info(data)
             #cache the data (identifier, object, seconds to cache (1 month)
-            park_list = List(park_list, state_input,now_plus_expiry())
+            park_list = cache_list.data_list(park_list, state_input,now_plus_expiry())
             cache.add(park_list)
             
             return park_list

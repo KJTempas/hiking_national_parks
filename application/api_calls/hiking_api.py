@@ -2,8 +2,7 @@ import requests
 import os
 import logging
 from dotenv import load_dotenv
-import cache
-from ..models import List
+from cache import cache, cache_list
 from datetime import datetime
 import time
 
@@ -56,8 +55,8 @@ def get_trails(lat, lon):
         #     f'Name: {trail_name} | Trail summary: {trail_summary} | Trail length: {trail_length} | Trail difficulty: {trail_difficulty} | Trail img: {trail_img}')
             
             #add data to cache - expires in 1 month
-            trail_list = List(trail_list, now_plus_expiry)
-            cache.add((lat,lon), trail_list)
+            trail_list = cache_list.data_list(trail_list,(lat,lon), now_plus_expiry)
+            cache.add(trail_list)
             return trail_list
         except Exception as e:
             log.exception(e)

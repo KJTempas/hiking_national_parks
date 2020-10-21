@@ -5,8 +5,7 @@ from dotenv import load_dotenv
 from pprint import pprint
 import re
 from datetime import datetime
-import cache
-from ..models import List
+from cache import cache, cache_list
 import time
 
 cached_time = 86400   #one day
@@ -67,9 +66,9 @@ def get_weather(lat, lon):
 
             weather_list = store_data(data)
         #cache new weather_list for 1 day
-            weather_list = List(weather_list, now_plus_expiry)
+            weather_list = cache_list.data_list(weather_list,(lat,lon), now_plus_expiry)
             #cache.add((lat,lon), weather_list)
-            cache.add((lat,lon),weather_list)
+            cache.add(weather_list)
             return weather_list
             
         except Exception as e:

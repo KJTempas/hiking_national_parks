@@ -30,8 +30,3 @@ db.connect()
 db.create_tables([Trails])
 
 
-class List:
-    def __init__(self, list, identifier, expiry):
-        self.list = list
-        self.identifier = identifier
-        self.expiry = expiry
