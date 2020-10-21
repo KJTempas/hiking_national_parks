@@ -5,7 +5,7 @@ from models import Trails
 
 def add_saved_trail(name, leng, dif, summ, natl_pk, state):
     
-    Trails.create(trail_id = AutoField, trail_name = name, trail_len = leng, trail_difficulty = dif , trail_sum = summ, natl_park = natl_pk, date_saved = DateTimeField, state = state)
+    Trails.create(trail_name = name, trail_len = leng, trail_difficulty = dif , trail_sum = summ, natl_park = natl_pk, state = state)
     print(f'{name} has been added')
 
 
@@ -16,7 +16,7 @@ def delete_trail_by_id(trail_id):
 
 def delete_everything():
     """ Deletes all trails from database"""
-    Trails.delete().execute()
+    Trails.delete().where(Trails.trail_id >= 1).execute()
 
 
 def get_all_saved_trails():
@@ -26,7 +26,7 @@ def get_all_saved_trails():
 
 def get_id_by_trail_name(name):
 
-    trail_id = Trails.get_id().where(Trails.trail_name = name)
+    trail_id = Trails.get_id().where(Trails.trail_name == name)
     return trail_id
 
 
