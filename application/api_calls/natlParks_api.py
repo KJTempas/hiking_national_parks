@@ -39,8 +39,8 @@ def get_response(state_input):
             data = response.json()
             park_list = get_info(data)
             
-            natlParks_data_list_for_cache = cache_list.DataList(park_list, state_input, now_plus_expiry)
-            print(now_plus_expiry)
+            natlParks_data_list_for_cache = cache_list.DataList(park_list, state_input, now_plus_expiry())
+            
             cache.add(natlParks_data_list_for_cache)
             
             return park_list
@@ -81,5 +81,4 @@ def get_info(data):
 
 def now_plus_expiry():
     now = int(time.time())
-    
     return now + cached_time

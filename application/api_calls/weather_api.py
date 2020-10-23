@@ -56,7 +56,8 @@ def get_weather(lat, lon):
 
     #see if trail_list is in cache; otherwise, do API call
     #identifier is lat/long
-    cached_weather_list = cache.fetch((lat,lon), cache_list.DataList)
+    latLon = f'{lat}+{lon}'
+    cached_weather_list = cache.fetch((latLon), cache_list.DataList)
     if cached_weather_list:
         log.info('Return from Cache')  
         return cached_weather_list
@@ -68,7 +69,8 @@ def get_weather(lat, lon):
 
             weather_list = store_data(data)
         #cache new weather_list for 1 day
-            weather_data_list_for_cache = cache_list.DataList(weather_list, (lat,lon), now_plus_expiry)
+            latLon = f'{lat}+{lon}'
+            weather_data_list_for_cache = cache_list.DataList(weather_list, (latLon), now_plus_expiry())
             cache.add(weather_data_list_for_cache)
             return weather_list
             

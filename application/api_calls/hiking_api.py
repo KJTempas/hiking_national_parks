@@ -23,7 +23,8 @@ def get_trails(lat, lon):
 
     # see if trail_list is in cache; otherwise, do API call
     # identifier is lat/long
-    cached_trail_list = cache.fetch((lat, lon), cache_list.DataList)
+    latLon = f'{lat}+{lon}'
+    cached_trail_list = cache.fetch((latLon), cache_list.DataList)
     if cached_trail_list:
         log.info('Return from Cache')  # this will be deleted later
         return cached_trail_list
@@ -65,7 +66,8 @@ def get_trails(lat, lon):
         #     f'Name: {trail_name} | Trail summary: {trail_summary} | Trail length: {trail_length} | Trail difficulty: {trail_difficulty} | Trail img: {trail_img}')
  
             #add data to cache - expires in 1 month
-            hiking_trails_data_list_for_cache = cache_list.DataList(trail_list, (lat,lon), now_plus_expiry)
+            latLon = f'{lat}+{lon}'
+            hiking_trails_data_list_for_cache = cache_list.DataList(trail_list, latLon, now_plus_expiry())
             cache.add(hiking_trails_data_list_for_cache)
 
             return trail_list
