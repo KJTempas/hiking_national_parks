@@ -4,9 +4,12 @@ import logging
 from dotenv import load_dotenv
 from pprint import pprint
 import re
+
+from cache import cache, cache_list
 from datetime import datetime
-import cache
-from models import List
+import time
+
+cached_time = 86400
 
 load_dotenv('application/.env')
 
@@ -53,8 +56,10 @@ def get_weather(lat, lon):
 
     #see if trail_list is in cache; otherwise, do API call
     #identifier is lat/long
-    if cached_weather_list := cache.fetch((lat,lon)):
-        log.info('Return from Cache')  #this will be deleted later
+    latLon = f'{lat}+{lon}'
+    cached_weather_list = cache.fetch((latLon), cache_list.DataList)
+    if cached_weather_list:
+        log.info('Return from Cache')  
         return cached_weather_list
     else:
         log.info('new API call')
@@ -64,7 +69,9 @@ def get_weather(lat, lon):
 
             weather_list = store_data(data)
         #cache new weather_list for 1 day
-            cache.add((lat,lon), weather_list, 86400 )
+            latLon = f'{lat}+{lon}'
+            weather_data_list_for_cache = cache_list.DataList(weather_list, (latLon), now_plus_expiry())
+            cache.add(weather_data_list_for_cache)
             return weather_list
             
         except Exception as e:
@@ -72,4 +79,7 @@ def get_weather(lat, lon):
             log.exception(f'Error Message from request: {response.text}')
             raise e
 
+def now_plus_expiry():
+    now = int(time.time())
+    return now + cached_time
 
