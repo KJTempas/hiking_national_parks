@@ -1,5 +1,6 @@
 from peewee import *
-from db_config import database_path
+from .db_config import database_path
+# from db_config import database_path
 import datetime
 
 db = SqliteDatabase(database_path)

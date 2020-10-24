@@ -4,4 +4,4 @@ regular database with a different database for testing
 This prevents the tests affecting the real data in the app.
 """
 
-database_path = 'database/hiking_trails.db'
+database_path = './hiking_trails.db'
