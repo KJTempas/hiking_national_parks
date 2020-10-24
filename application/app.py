@@ -1,11 +1,23 @@
 from flask import Flask, render_template, request, redirect, url_for
 from api_calls import natlParks_api, hiking_api, weather_api, state_name_and_code
+from models import initialize_db, db
+
 import logging
 # Logger
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s', datefmt='%d-%m-%y %H:%M:%S')
 log = logging.getLogger('root')
 # from models import *
 app = Flask(__name__)
+
+@app.before_request
+def before_request():
+    # create db if needed and connect
+    initialize_db()
+
+@app.teardown_request
+def teardown_request(exception):
+    # close the db connection
+    db.close()
 
 @app.route('/', methods=['GET'])
 def home():
