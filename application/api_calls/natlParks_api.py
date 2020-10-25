@@ -57,13 +57,13 @@ def get_info(data):
         for park in list_of_parks:
             park_list_w_info = dict()
 
-            if park['fullName'] and park['latitude'] and park['longitude']:
+            if park['fullName']:
                 modified_name = " ".join(re.findall("[a-zA-Z]+", park['fullName']))
                 park_list_w_info['name'] = modified_name
-                park_list_w_info['lat'] = park['latitude']
-                park_list_w_info['lon'] = park['longitude']
-                park_list_w_info['designation']= park['designation']
-
+            # if no longitude or latitude provided, set lon or lat to empty string
+            park_list_w_info['lat'] = park['latitude'] if park['latitude'] else ''
+            park_list_w_info['lon'] = park['longitude'] if park['longitude'] else ''
+                
             if park['designation']:
                 park_list_w_info['designation'] = park['designation']
 
