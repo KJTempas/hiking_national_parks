@@ -25,10 +25,12 @@
 
                         <td>{{trail['summary']}}</td>
                         <td>{{trail['length']}}</td>
-
-                        <td ><button btn style="border:none; border-bottom: 1px solid black;" value="{{trail['name']}}">Save</button>
-
+<!--                        https://stackoverflow.com/questions/51803008/send-table-data-via-form-to-flask-method-->
+                        <td name="trail-obj"><button btn style="border:none; border-bottom: 1px solid black;">Save</button>
+                        <input id="trail-obj" name="trail-obj"  value=" {{ trail['name'] }} "/>
                         </td>
+
+
 
                     </tr>
                 {% endfor %}

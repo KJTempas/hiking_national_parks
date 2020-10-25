@@ -45,8 +45,9 @@ def show_national_park():
 @app.route('/moreinfo/<state>/<park>/<lat>/<lon>', methods=['GET','POST'])
 def get_trail(state, park, lat, lon):
     if request.method == 'POST':
-        if request.form.get('trailname'):
-            trail_obj = request.form.get('trailname')
+        if request.form.get('trail-obj'):
+
+            trail_obj = request.form.get('trail-obj')
             return '<h1>Here is the trail {}</h1>'.format(trail_obj)
         elif request.form.get('back-page'):
             return redirect(url_for('show_national_park', states=state))

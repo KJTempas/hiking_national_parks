@@ -57,7 +57,6 @@ def get_weather(lat, lon):
     # identifier is lat/long
     latLon = f'{lat}+{lon}_weather'
     cached_weather_list = cache.fetch((latLon), cache_list.DataList)
-    log.debug(cached_weather_list)
     if cached_weather_list:
         log.info('Weather API - Return from Cache')
         return cached_weather_list
