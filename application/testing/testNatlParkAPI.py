@@ -60,14 +60,9 @@ class TestNatlParkAPI(TestCase):
             }]
 
         } ] }
-        
-        expected_park_list = [
-            {"name": "Grand Portage National Monument",
-            "lat": "",
-            "lon": "",
-            "designation": "National Monument",
-            "city": "Grand Portage"}
-        ]
+         #if there is no lat or lon, the park will not go on the park list
+         #because we cannot access trails with no lat and lon
+        expected_park_list = []
         park_list = api_calls.natlParks_api.get_info(example_api_response)
         #compare data
         self.assertEqual(expected_park_list, park_list)
