@@ -2,7 +2,13 @@
 
 {% block head %}
 
-<h1>National Park and Trail Manager</h1>
+<div class="jumbotron jumbotron-fluid">
+  <h1 class="display-4">National Park and Trail Manager</h1>
+</div>
+
+
+
+
 
 
 
@@ -10,7 +16,7 @@
 
 {% block body %}
 
-<div class="content">
+<div class="container">
 
     <h2>Please select the state that you want to go</h2>
     <br>
@@ -22,7 +28,7 @@
                 <option value="{{state_abbrev}}">{{state_name}}</option>
             {% endfor %}
             </select>
-            <input type ="submit" value="Get information"/>
+            <input type="submit" value="Get information"/>
         </form>
     </div>
 

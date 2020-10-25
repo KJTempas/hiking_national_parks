@@ -21,15 +21,15 @@
             {% for park in park_list %}
                 <tr>
                     <td>{{park['name']}}</td>
-                    {% if park['designation'] is defined %}
+                    {% if park['designation'] %}
                     <td>{{park['designation']}}</td>
                     {% else %}
-                        <td>N/A</td>
+                    <td>N/A</td>
                     {% endif %}
-                    {% if park['city'] is defined %}
+                    {% if park['city'] %}
                     <td>{{park['city']}}</td>
                     {% else %}
-                        <td>N/A</td>
+                    <td>N/A</td>
                     {% endif %}
                     <td>
                         <a href="/moreinfo/{{state}}/{{park['name']}}/{{park['lat']}}/{{park['lon']}}">More Info</a>

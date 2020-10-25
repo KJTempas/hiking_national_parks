@@ -1,5 +1,6 @@
 from peewee import *
-from db_config import database_path
+from .db_config import database_path
+# from db_config import database_path
 import datetime
 
 db = SqliteDatabase(database_path)
@@ -25,14 +26,17 @@ class Trails(Model):
         database = db
 
 
+def initialize_db():
+    db._connect()
+    db.create_tables([Trails], safe=True)
 
 
-db.connect()
-db.create_tables([Trails])
 
 
-class List:
-    def __init__(self, list, identifier, expiry):
-        self.list = list
-        self.identifier = identifier
-        self.expiry = expiry
+
+#
+# class List:
+#     def __init__(self, list, identifier, expiry):
+#         self.list = list
+#         self.identifier = identifier
+#         self.expiry = expiry

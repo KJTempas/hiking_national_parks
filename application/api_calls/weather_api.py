@@ -47,39 +47,39 @@ def store_data(weather):
     return weather_list
 
 
-
 def get_weather(lat, lon):
     params = {'lat': lat, 'lon': lon, 'exclude': 'current,alerts,hourly,minutely', 'units': 'imperial',
               'appid': WEATHER_KEY}
 
     response = requests.get(API_URL, params=params)
 
-    #see if trail_list is in cache; otherwise, do API call
-    #identifier is lat/long
-    latLon = f'{lat}+{lon}'
+    # see if trail_list is in cache; otherwise, do API call
+    # identifier is lat/long
+    latLon = f'{lat}+{lon}_weather'
     cached_weather_list = cache.fetch((latLon), cache_list.DataList)
+    log.debug(cached_weather_list)
     if cached_weather_list:
-        log.info('Return from Cache')  
+        log.info('Weather API - Return from Cache')
         return cached_weather_list
     else:
-        log.info('new API call')
+        log.info('Weather API - new API Call')
         try:
             response.raise_for_status()
             data = response.json()
 
             weather_list = store_data(data)
-        #cache new weather_list for 1 day
-            latLon = f'{lat}+{lon}'
+            # cache new weather_list for 1 day
+            latLon = f'{lat}+{lon}_weather'
             weather_data_list_for_cache = cache_list.DataList(weather_list, (latLon), now_plus_expiry())
             cache.add(weather_data_list_for_cache)
             return weather_list
-            
+
         except Exception as e:
             log.exception(f'Error occurred. More detail: {e}')
             log.exception(f'Error Message from request: {response.text}')
             raise e
 
+
 def now_plus_expiry():
     now = int(time.time())
     return now + cached_time
-
