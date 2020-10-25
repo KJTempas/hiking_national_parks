@@ -61,8 +61,8 @@ def get_info(data):
                 modified_name = " ".join(re.findall("[a-zA-Z]+", park['fullName']))
                 park_list_w_info['name'] = modified_name
             # if no longitude or latitude provided, set lon or lat to empty string
-            park_list_w_info['lat'] = park['latitude'] if park['latitude'] else ''
-            park_list_w_info['lon'] = park['longitude'] if park['longitude'] else ''
+                park_list_w_info['lat'] = park['latitude'] #if park['latitude'] else ''
+                park_list_w_info['lon'] = park['longitude'] #if park['longitude'] else ''
                 
             if park['designation']:
                 park_list_w_info['designation'] = park['designation']
