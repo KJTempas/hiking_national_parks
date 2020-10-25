@@ -38,11 +38,11 @@ def get_response(state_input):
             response.raise_for_status()  # will raise an exception for 400(client) or 500(server) errors
             data = response.json()
             park_list = get_info(data)
-            
+
             natlParks_data_list_for_cache = cache_list.DataList(park_list, state_input, now_plus_expiry())
-            
+
             cache.add(natlParks_data_list_for_cache)
-            
+
             return park_list
         except Exception as ex:
             log.exception(ex)
@@ -62,22 +62,21 @@ def get_info(data):
                 park_list_w_info['name'] = modified_name
                 park_list_w_info['lat'] = park['latitude']
                 park_list_w_info['lon'] = park['longitude']
-                park_list_w_info['designation']= park['designation']
+                park_list_w_info['designation'] = park['designation']
                 if park['designation']:
                     park_list_w_info['designation'] = park['designation']
-
 
                 if park['addresses']:
                     park_list_w_info['city'] = park['addresses'][0]['city']
 
                 park_list.append(park_list_w_info)
 
-
         return park_list
 
     except Exception as e:
         log.exception(e)
         raise e
+
 
 def now_plus_expiry():
     now = int(time.time())

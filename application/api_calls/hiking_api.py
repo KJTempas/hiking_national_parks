@@ -53,19 +53,6 @@ def get_trails(lat, lon):
 
                         trail_list.append(trail_list_w_info)
 
-
-        # for x in range(-1, 5):
-        #     trail_name = data['trails'][x]['name']
-        #     trail_summary = data['trails'][x]['summary']
-        #     trail_length = data['trails'][x]['length']
-        #     trail_difficulty = data['trails'][x]['difficulty']
-        #     trail_img = data['trails'][x]['imgMedium']
-        #     trail_list.append(trail_name)
-        #     #
-        # print(
-        #     f'Name: {trail_name} | Trail summary: {trail_summary} | Trail length: {trail_length} | Trail difficulty: {trail_difficulty} | Trail img: {trail_img}')
- 
-            #add data to cache - expires in 1 month
             latLon = f'{lat}+{lon}'
             hiking_trails_data_list_for_cache = cache_list.DataList(trail_list, latLon, now_plus_expiry())
             cache.add(hiking_trails_data_list_for_cache)
