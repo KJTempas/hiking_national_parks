@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from api_calls import natlParks_api, hiking_api, weather_api, state_name_and_code
-from database import models
+from database import models, database_functions
 
 
 import logging
@@ -43,11 +43,12 @@ def show_national_park():
 
 
 @app.route('/moreinfo/<state>/<park>/<lat>/<lon>', methods=['GET','POST'])
-def get_trail(state, park, lat, lon):
+def get_trail_weather(state, park, lat, lon):
     if request.method == 'POST':
         if request.form.get('trail-obj'):
-
             trail_obj = request.form.get('trail-obj')
+            # Save the db here
+
             return '<h1>Here is the trail {}</h1>'.format(trail_obj)
         elif request.form.get('back-page'):
             return redirect(url_for('show_national_park', states=state))
@@ -58,6 +59,9 @@ def get_trail(state, park, lat, lon):
         return render_template('hikes_weather.html', park=park, trail_list=trail_list, weather_list=weather_list)
 
 
+def save_data_to_db(trail_name,length,summary,park,state):
+
+    database_functions.add_saved_trail(trail_name,length,summary,park,state)
 
 
 if __name__ == "__main__":

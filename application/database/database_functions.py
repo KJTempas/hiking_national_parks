@@ -3,9 +3,9 @@ from models import Trails
 
 ### use these functions to preform actions in the database
 
-def add_saved_trail(name, leng, dif, summ, natl_pk, state):
+def add_saved_trail(name, leng, summ, natl_pk, state):
     
-    Trails.create(trail_id = AutoField, trail_name = name, trail_len = leng, trail_difficulty = dif , trail_sum = summ, natl_park = natl_pk, date_saved = DateTimeField, state = state)
+    Trails.create(trail_id = AutoField, trail_name = name, trail_len = leng, trail_sum = summ, natl_park = natl_pk, date_saved = DateTimeField, state = state)
     print(f'{name} has been added')
 
 
