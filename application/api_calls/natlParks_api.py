@@ -25,12 +25,12 @@ def get_response(state_input):
     # identifier is state_input
     cached_park_list = cache.fetch(state_input, cache_list.DataList)
     if cached_park_list:
-        print('return from cache')# this will be deleted later
-        log.info('Return from Cache')  
+        # print('return from cache')# this will be deleted later
+        log.info('National Park API - Return from Cache')
         return cached_park_list
     else:
-        log.info('return from API call')
-        print('return from API call') #this will be removed
+        log.info('National Park API - return from API call')
+        # print('return from API call') #this will be removed
 
         try:
             query = {'stateCode': state_input, 'api_key': NTL_PARK_KEY}
@@ -63,14 +63,14 @@ def get_info(data):
                 park_list_w_info['lat'] = park['latitude']
                 park_list_w_info['lon'] = park['longitude']
                 park_list_w_info['designation']= park['designation']
+                if park['designation']:
+                    park_list_w_info['designation'] = park['designation']
 
-            if park['designation']:
-                park_list_w_info['designation'] = park['designation']
 
-            if park['addresses']:
-                park_list_w_info['city'] = park['addresses'][0]['city']
+                if park['addresses']:
+                    park_list_w_info['city'] = park['addresses'][0]['city']
 
-            park_list.append(park_list_w_info)
+                park_list.append(park_list_w_info)
 
 
         return park_list

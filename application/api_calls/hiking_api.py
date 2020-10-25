@@ -26,10 +26,10 @@ def get_trails(lat, lon):
     latLon = f'{lat}+{lon}'
     cached_trail_list = cache.fetch((latLon), cache_list.DataList)
     if cached_trail_list:
-        log.info('Return from Cache')  # this will be deleted later
+        log.info('Hiking API - Return from Cache')  # this will be deleted later
         return cached_trail_list
     else:
-        log.info('new API call')
+        log.info('Hiking API - New API call')
 
         try:
             query = {'lat': lat, 'lon': lon, 'key': HIKING_KEY}
