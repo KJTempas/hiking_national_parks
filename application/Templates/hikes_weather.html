@@ -5,10 +5,18 @@
 
 <div class="content">
 
-    <h1>National Park and Trail Manager</h1>
+    <div class="jumbotron">
+    <h1 class="display-4">National Park and Trail Manager</h1>
+
+    <hr class="my-4">
+    <h2>Park Name: {{park}}</h2>
+    </p>
+    </div>
 
     {% if trail_list %}
-    <h2>Park Name: {{park}}</h2>
+    <p><h2>Available Trail</h2></p>
+
+    <br>
         <form method="POST">
             <table class="table table-bordered">
 
@@ -40,37 +48,43 @@
     {% endif %}
 
     {% if weather_list %}
-        <h2>Park Name: {{park}}</h2>
-            <table class="table table-bordered">
-                <tr>
-                    <th scope="col">Forecast Date</th>
-                    <th scope="col">Temperature</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Humidity</th>
-                    <th scope="col">Rain</th>
-                </tr>
-                {% for weather in weather_list %}
-                    <tr>
-                        <td>{{weather['date']}}</td>
-                        <td>
-                            Min: {{weather['temp']['min']}}F<br>
-                            Max: {{weather['temp']['max']}}F<br>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h2>Weather Forecast at {{park}}</h2>
+        </div>
+    </div>
 
-                        </td>
-                        <td>{{weather['desc']}}</td>
-                        <td>{{weather['humidity']}}</td>
-                    {% if weather['rain'] is defined %}
-                        <td>{{weather['rain']}}</td>
-                    {% else %}
-                        <td>N/A</td>
-                    {% endif %}
+    <table class="table table-bordered">
+        <tr>
+            <th scope="col">Forecast Date</th>
+            <th scope="col">Temperature</th>
+            <th scope="col">Description</th>
+            <th scope="col">Humidity</th>
+            <th scope="col">Rain</th>
+        </tr>
+        {% for weather in weather_list %}
+            <tr>
+                <td>{{weather['date']}}</td>
+                <td>
+                    Min: {{weather['temp']['min']}}F<br>
+                    Max: {{weather['temp']['max']}}F<br>
 
-                    </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-        <h4><i>No Weather Forecast available at {{park}}</i></h4>
-        {% endif %}
+                </td>
+                <td>{{weather['desc']}}</td>
+                <td>{{weather['humidity']}}</td>
+            {% if weather['rain'] is defined %}
+                <td>{{weather['rain']}}</td>
+            {% else %}
+                <td>N/A</td>
+            {% endif %}
+
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+
+    <h4><i>No Weather Forecast available at {{park}}</i></h4>
+    {% endif %}
 
     <form method="POST" >
         <button type="button" name="back-page" value="back-page">Back to Previous Page</button>
