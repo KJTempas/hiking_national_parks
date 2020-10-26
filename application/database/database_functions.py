@@ -1,5 +1,5 @@
 from peewee import *
-from models import Trails
+from .models import Trails
 
 ### use these functions to preform actions in the database
 
@@ -24,10 +24,10 @@ def get_all_saved_trails():
     query = Trails.select()
     return list(query)
 
-def get_id_by_trail_name(name):
-
-    trail_id = Trails.get_id().where(Trails.trail_name = name)
-    return trail_id
+# def get_id_by_trail_name(name):
+#
+#     trail_id = Trails.get_id().where(Trails.trail_name = name)
+#     return trail_id
 
 
 def saved_trail_count():

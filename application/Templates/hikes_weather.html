@@ -10,15 +10,16 @@
     {% if trail_list %}
     <h2>Park Name: {{park}}</h2>
         <form method="POST">
-            <table>
-                <tr>
-                    <th>Trail Name</th>
-                    <th>Trail Summary</th>
-                    <th>Trail Length(in miles)</th>
-                    <th>  </th>
-                    <th>  </th>
+            <table class="table table-bordered">
 
+                <tr>
+                    <th scope="col">Trail Name</th>
+                    <th scope="col">Trail Summary</th>
+                    <th scope="col">Trail Length(in miles)</th>
+                    <th scope="col">Save Trail</th>
                 </tr>
+
+                <tbody>
                 {% for trail in trail_list %}
                     <tr>
                         <td name="trailname">{{trail['name']}}</td>
@@ -26,14 +27,12 @@
                         <td>{{trail['summary']}}</td>
                         <td>{{trail['length']}}</td>
 <!--                        https://stackoverflow.com/questions/51803008/send-table-data-via-form-to-flask-method-->
-                        <td name="trail-obj"><button btn style="border:none; border-bottom: 1px solid black;">Save</button>
-                        <input id="trail-obj" name="trail-obj"  value=" {{ trail['name'] }} "/>
-                        </td>
-
-
+                        <td name="trail-obj"><button type="submit" style="border:none; border-bottom: 1px solid black;" value="{{trail['name']}}">Save</button>
+                        <input id="trail-obj" name="trail-obj"  value=" {{ trail['name'] }} "/></td>
 
                     </tr>
                 {% endfor %}
+                </tbody>
             </table>
         </form>
     {% else %}
@@ -42,13 +41,13 @@
 
     {% if weather_list %}
         <h2>Park Name: {{park}}</h2>
-            <table>
+            <table class="table table-bordered">
                 <tr>
-                    <th>Forecast Date</th>
-                    <th>Temperature</th>
-                    <th>Description</th>
-                    <th>Humidity</th>
-                    <th>Rain</th>
+                    <th scope="col">Forecast Date</th>
+                    <th scope="col">Temperature</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Humidity</th>
+                    <th scope="col">Rain</th>
                 </tr>
                 {% for weather in weather_list %}
                     <tr>
@@ -66,8 +65,6 @@
                         <td>N/A</td>
                     {% endif %}
 
-
-
                     </tr>
                 {% endfor %}
             </table>
@@ -76,7 +73,7 @@
         {% endif %}
 
     <form method="POST" >
-        <button type="back" name="back-page" value="back-page">Back to Previous Page</button>
+        <button type="button" name="back-page" value="back-page">Back to Previous Page</button>
         <input type="hidden" name="state" value="{{ state }}" />
     </form>
 

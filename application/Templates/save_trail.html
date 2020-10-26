@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+<div class="content">
+
+    <h1>National Park and Trail Manager</h1>
+    <h3>Saved Trails</h3>
+
+    <table class="table table-bordered">
+        <th scope="col">#</th>
+        <th scope="col">Trail Name</th>
+        <th scope="col">Trail Length</th>
+        <th scope="col">Summary</th>
+        <th scope="col">National Park Name</th>
+        <th scope="col">State Code</th>
+
+
+        <tbody>
+        {% for each in bookmark_list %}
+            <tr>
+                <th scope="row">{{ loop.index}}</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+</div>
+
+{% endblock %}

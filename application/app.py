@@ -46,8 +46,11 @@ def show_national_park():
 def get_trail_weather(state, park, lat, lon):
     if request.method == 'POST':
         if request.form.get('trail-obj'):
+            log.debug(request.form)
             trail_obj = request.form.get('trail-obj')
             # Save the db here
+            # database_functions.add_saved_trail(trail_name, length, summary, park, state)
+            # then rendered the show_saved_trails page on the return
 
             return '<h1>Here is the trail {}</h1>'.format(trail_obj)
         elif request.form.get('back-page'):
@@ -58,10 +61,15 @@ def get_trail_weather(state, park, lat, lon):
 
         return render_template('hikes_weather.html', park=park, trail_list=trail_list, weather_list=weather_list)
 
+@app.route('/savedtrails')
+def show_saved_trails():
+    # trail_name, length, summary, park, state
+    # Mainly retrieve the trail info from db
 
-def save_data_to_db(trail_name,length,summary,park,state):
 
-    database_functions.add_saved_trail(trail_name,length,summary,park,state)
+    # pass bookmark_list to the template
+
+    return render_template('save_trail.html')
 
 
 if __name__ == "__main__":

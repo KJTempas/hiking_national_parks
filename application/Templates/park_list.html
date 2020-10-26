@@ -12,11 +12,11 @@
 
     {% if park_list %}
     <h2>State: {{state}}</h2>
-        <table>
+        <table class="table table-bordered">
             <tr>
-                <th>Park Name</th>
-                <th>Park Type</th>
-                <th>City</th>
+                <th scope="col">Park Name</th>
+                <th scope="col">Park Type</th>
+                <th scope="col">City</th>
             </tr>
             {% for park in park_list %}
                 <tr>
@@ -42,7 +42,7 @@
     {% endif %}
 
     <form method="POST" >
-        <button type="back" name="back-page" value="back-page">Back to Previous Page</button>
+        <button type="button" name="back-page" value="back-page">Back to Previous Page</button>
 
     </form>
 
