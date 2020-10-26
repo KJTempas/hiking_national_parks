@@ -26,7 +26,7 @@ def get_all_saved_trails():
 
 def get_id_by_trail_name(name):
 
-    trail_id = Trails.get_id().where(Trails.trail_name = name)
+    trail_id = Trails.get_id().where(Trails.trail_name == name)
     return trail_id
 
 
