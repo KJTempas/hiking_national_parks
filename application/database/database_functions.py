@@ -6,7 +6,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s', datefmt='%d-%m-%y %H:%M:%S')
 log = logging.getLogger('root')
 
+
 # use these functions to preform actions in the database
+# TODO: need to add exception
 
 def add_saved_trail(name, leng, summ, natl_pk, state):
     Trails.create(trail_id=AutoField, trail_name=name, trail_len=leng, trail_sum=summ, natl_park=natl_pk,

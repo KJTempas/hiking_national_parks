@@ -6,8 +6,10 @@
 <div class="content">
 
     <h1>National Park and Trail Manager</h1>
-    <h3>Saved Trails</h3>
 
+
+    {% if bookmark_list %}
+    <h3>Saved Trails</h3>
     <table class="table table-bordered">
         <th scope="col">#</th>
         <th scope="col">Trail Name</th>
@@ -30,6 +32,15 @@
         {% endfor %}
         </tbody>
     </table>
+
+    {% else %}
+    <br>
+    <p>
+      <h4><i>No saved trails in the system yet. Please go back to the Home Page to add some trails</i></h4>
+    <a href="{{ (url_for('home')) }}"><button type="button" class="btn btn-secondary btn-lg btn-block">Show Bookmarked Trail Info</button></a>
+    </p>
+
+    {% endif %}
 
 
 
