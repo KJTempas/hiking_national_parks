@@ -21,7 +21,6 @@
 
 
         <tbody>
-        {{ bookmark_list }}
         {% for trail in bookmark_list %}
             <tr>
                 <th scope="row">{{ loop.index}}</th>
@@ -33,7 +32,7 @@
                 <td name="selected-row">
 
                     <form method="POST">
-                        <input type="hidden" id="selected-row" name="selected-row" value=" {{ trail.trail_id }} "/>
+                        <input type="hidden" id="selected-row" name="selected-row" value=" {{ trail }} "/>
                         <button type="submit" style="border:none; border-bottom: 1px solid black;">Delete</button>
                     </form>
 
@@ -47,11 +46,14 @@
     <br>
     <p>
       <h4><i>No saved trails in the system yet. Please go back to the Home Page to add some trails</i></h4>
-    <a href="{{ (url_for('home')) }}"><button type="button" class="btn btn-secondary btn-lg btn-block">Show Bookmarked Trail Info</button></a>
+
     </p>
 
     {% endif %}
 
+    <form method="POST" >
+        <button type="submit" name="back-page" value="back-page" class="btn btn-secondary btn-lg">Back to Home Page</button>
+    </form>
 
 
 

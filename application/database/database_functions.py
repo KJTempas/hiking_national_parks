@@ -22,34 +22,51 @@ def add_trail(name, leng, summ, natl_pk, state):
 
 
 def delete_trail_by_id(trail_id):
-    query = Trails.delete().where(Trails.trail_id == trail_id)
-    query.execute()
+    success = False
+    try:
+        query = Trails.delete().where(Trails.trail_id == trail_id)
+        query.execute()
+        success = True
+    except Exception as e:
+        log.exception(f'Error occurred. More detail: {e}')
+        raise e
 
+    return success
 
 def delete_everything():
     """ Deletes all trails from database"""
-    Trails.delete().execute()
+    try:
+        Trails.delete().execute()
+
+    except Exception as e:
+        log.exception(f'Error occurred. More detail: {e}')
+        raise e
 
 
 def get_all_saved_trails():
     """ Returns everything in db"""
-    query_01 = Trails.select()
-    all_trails = list()
+    try:
+        query_01 = Trails.select()
+        all_trails = list()
 
-    for i in query_01:
-        all_trails.append(i)
-        result = str(i)
-
-
-    return all_trails
+        for i in query_01:
+            all_trails.append(i)
+            result = str(i)
 
 
-# def get_id_by_trail_name(name):
-#
-#     trail_id = Trails.get_id().where(Trails.trail_name = name)
-#     return trail_id
+        return all_trails
+    except Exception as e:
+        log.exception(f'Error occurred. More detail: {e}')
+        raise e
 
 
 def saved_trail_count():
     """ :returns the number of saved trails in the db """
-    return Trails.select().count()
+    try:
+        counts = Trails.select().count()
+        return counts
+    except Exception as e:
+        log.exception(f'Error occurred. More detail: {e}')
+        raise e
+
+

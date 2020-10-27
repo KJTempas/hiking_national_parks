@@ -36,7 +36,10 @@
 
 <div class="container">
     <br>
-    <a href="{{ (url_for('show_saved_trails')) }}"><button type="button" class="btn btn-primary btn-lg btn-block">Show Bookmarked Trail Info</button></a>
+    <form method="POST" >
+        <button name="saved-trails" value="saved-trails" type="submit" class="btn btn-primary btn-lg btn-block">Show Bookmarked Trail Info</button>
+    </form>
+
 </div>
 
 {% endblock %}
