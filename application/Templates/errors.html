@@ -6,10 +6,10 @@
 
 
 <div class="alert alert-danger" role="alert">
-  {% if error_code == 500 %}
+  {% if error_code == '500' %}
     <h4 class="alert-heading">Error Occured!</h4>
   {% else %}
-    <h4 class="alert-heading">Page Not Found!</h4>
+    <h4 class="alert-heading">Bad Request!</h4>
   {% endif %}
     {{ error_message }}
 </div>

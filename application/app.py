@@ -66,8 +66,7 @@ def get_trail_weather(state, park, lat, lon):
                 return redirect(url_for('show_saved_trails'))
              # TODO need to figure out how to show specific error message
             except peewee.IntegrityError as e:
-
-                abort(500, description=f'{trail_obj["name"]} is already in the database. Please try save another trail to the system.')
+                abort(400, description=f'{trail_obj["name"]} is already in the database. Please try to save another trail to the system.')
             except Exception as e:
                 abort(500, description=f'{trail_obj["name"]} was not able to add in the database at this moment. '
                                            f'Please try again later.')
@@ -83,10 +82,10 @@ def get_trail_weather(state, park, lat, lon):
 
 @app.errorhandler(500)
 def internal_error(error):
-    return render_template('errors.html', error_code='400', error_message=error.description)
+    return render_template('errors.html', error_code='500', error_message=error.description)
 
 
-@app.errorhandler(404)
+@app.errorhandler(400)
 def not_found(error):
     return render_template('errors.html', error_code='400', error_message=error.description)
 
@@ -105,7 +104,8 @@ def show_saved_trails():
                 return redirect(url_for('delete_trail', trail_name=eval(selected_row)['name']))
             except Exception as e:
                 abort(500,
-                      description=f'{eval(selected_row)["name"]} was not able to be deleted from the database at this moment. '
+                      description=f'{eval(selected_row)["name"]} was not able to be deleted from the database at this '
+                                  f'moment. '
                                   f'Please try again later.')
 
     else:
