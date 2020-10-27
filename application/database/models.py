@@ -10,7 +10,7 @@ class Trails(Model):
     # db id
     trail_id = AutoField()
     # hiking API returned items
-    trail_name = CharField()
+    trail_name = CharField(unique=True)
     trail_len = FloatField()
     # trail_difficulty = CharField()
     trail_sum = CharField()

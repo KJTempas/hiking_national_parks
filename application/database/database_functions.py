@@ -17,21 +17,20 @@ def add_trail(name, leng, summ, natl_pk, state):
                       state=state)
         log.info(f'Added Trail: {name}  to the database.')
     except Exception as e:
+
+
         log.exception(f'Error occurred. More detail: {e}')
         raise e
 
 
 def delete_trail_by_id(trail_id):
-    success = False
     try:
         query = Trails.delete().where(Trails.trail_id == trail_id)
         query.execute()
-        success = True
     except Exception as e:
         log.exception(f'Error occurred. More detail: {e}')
         raise e
 
-    return success
 
 def delete_everything():
     """ Deletes all trails from database"""

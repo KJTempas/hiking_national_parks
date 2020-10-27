@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, abort, jsonify
 from api_calls import natlParks_api, hiking_api, weather_api, state_name_and_code
 from database import models, database_functions
 
@@ -33,7 +33,6 @@ def home():
         return render_template('index.html', states_dict=state_dict)
 
 
-# TODO: Modified the route based on the selected state
 @app.route('/parks', methods=['GET', 'POST'])
 def show_national_park():
     if request.method == 'POST':
@@ -61,16 +60,30 @@ def get_trail_weather(state, park, lat, lon):
 
                 return redirect(url_for('show_saved_trails'))
             except Exception as e:
-
-                return render_template('error_page.html', trail_name=trail_obj['name'])
-
+                log.debug(e)
+                if e == 'UNIQUE constraint failed: trails.trail_name':
+                    abort(500, description=f'{trail_obj["name"]} is already in the database.')
+                else:
+                    abort(500, description=f'{trail_obj["name"]} was not able to add in the database at this moment. '
+                                           f'Please try again later.')
         elif request.form.get('back-page'):
             return redirect(url_for('show_national_park', states=state))
     else:
+
         trail_list = hiking_api.get_trails(lat, lon)
         weather_list = weather_api.get_weather(lat, lon)
 
         return render_template('hikes_weather.html', park=park, trail_list=trail_list, weather_list=weather_list)
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('errors.html', error_message=error.description)
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('errors.html', error_message=error.description)
 
 
 @app.route('/savedtrails', methods=['GET', 'POST'])
@@ -79,12 +92,17 @@ def show_saved_trails():
         if request.form.get('back-page'):
             return redirect(url_for('home'))
         else:
-            selected_row = request.form.get('selected-row')
-            result = database_functions.delete_trail_by_id(eval(selected_row)['id'])
-            # TODO: add result here so the page will print differnet content if the delete function is not working
-            log.info(result)
+            try:
 
-            return redirect(url_for('delete_trail', trail_name=eval(selected_row)['name']))
+                selected_row = request.form.get('selected-row')
+                database_functions.delete_trail_by_id(eval(selected_row)['id'])
+
+                return redirect(url_for('delete_trail', trail_name=eval(selected_row)['name']))
+            except Exception as e:
+                abort(500,
+                      description=f'{eval(selected_row)["name"]} was not able to be deleted from the database at this moment. '
+                                  f'Please try again later.')
+
     else:
         # Mainly retrieve the trail info from db
         saved_trails = database_functions.get_all_saved_trails()
