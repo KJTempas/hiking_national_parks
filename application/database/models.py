@@ -31,12 +31,3 @@ def initialize_db():
     db.create_tables([Trails], safe=True)
 
 
-
-
-
-#
-# class List:
-#     def __init__(self, list, identifier, expiry):
-#         self.list = list
-#         self.identifier = identifier
-#         self.expiry = expiry
