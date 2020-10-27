@@ -5,8 +5,6 @@ from peewee import SqliteDatabase
 
 db_config.database_path = 'test_hiking_trails.db'
 
-# TODO: Do I need this?
-# TEST_DB = SqliteDatabase(TEST_DB_PATH)
 from ..database import models,database_functions
 from application import app
 
@@ -22,13 +20,11 @@ class BasicTests(TestCase):
         # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
         #                                         os.path.join(app.config['BASEDIR'], TEST_DB)
         # app.config[]
-        # TODO: Should I include the Config file for DB?
+
         # Create a new DB
-        # TODO: Should I use the function to start a new DB instead?
-        # self.hiking_trails_db = models.initialize_db()
+        self.hiking_trails_db = models.initialize_db()
 
         # Clear all tables in DB
-        # TODO: is this correct
         models.Trails.delete().execute()
 
         self.app = app.test_client()
