@@ -8,42 +8,47 @@
 
 <div class="content">
 
-    <h1>National Park and Trail Manager</h1>
+    <div class="jumbotron">
+    <h1 class="display-4">National Park and Trail Manager</h1>
+
+    <hr class="my-4">
+    <h2>State: {{state}}</h2>
+    </p>
+    </div>
 
     {% if park_list %}
-    <h2>State: {{state}}</h2>
-        <table>
+
+    <table class="table table-bordered">
+        <tr>
+            <th scope="col">Park Name</th>
+            <th scope="col">Park Type</th>
+            <th scope="col">City</th>
+        </tr>
+        {% for park in park_list %}
             <tr>
-                <th>Park Name</th>
-                <th>Park Type</th>
-                <th>City</th>
+                <td>{{park['name']}}</td>
+                {% if park['designation'] %}
+                <td>{{park['designation']}}</td>
+                {% else %}
+                <td>N/A</td>
+                {% endif %}
+                {% if park['city'] %}
+                <td>{{park['city']}}</td>
+                {% else %}
+                <td>N/A</td>
+                {% endif %}
+                <td>
+                    <a href="/moreinfo/{{state}}/{{park['name']}}/{{park['lat']}}/{{park['lon']}}">More Info</a>
+                </td>
             </tr>
-            {% for park in park_list %}
-                <tr>
-                    <td>{{park['name']}}</td>
-                    {% if park['designation'] %}
-                    <td>{{park['designation']}}</td>
-                    {% else %}
-                    <td>N/A</td>
-                    {% endif %}
-                    {% if park['city'] %}
-                    <td>{{park['city']}}</td>
-                    {% else %}
-                    <td>N/A</td>
-                    {% endif %}
-                    <td>
-                        <a href="/moreinfo/{{state}}/{{park['name']}}/{{park['lat']}}/{{park['lon']}}">More Info</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% endfor %}
+    </table>
     {% else %}
-        <p>No Parks available at {{state}}</p>
+    <p>No Parks available at {{state}}</p>
     {% endif %}
 
     <form method="POST" >
-        <button type="back" name="back-page" value="back-page">Back to Previous Page</button>
-
+        <button type="button" name="back-page"  class="btn btn-secondary btn-lg" value="back-page">Back to Previous Page</button>
     </form>
 
 </div>

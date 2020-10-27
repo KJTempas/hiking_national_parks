@@ -5,38 +5,36 @@ import datetime
 
 db = SqliteDatabase(database_path)
 
-class Trails(Model):
 
-    ## db id
+class Trails(Model):
+    # db id
     trail_id = AutoField()
-    ## hiking API returned items
-    trail_name = CharField()
+    # hiking API returned items
+    trail_name = CharField(unique=True)
     trail_len = FloatField()
-    trail_difficulty = CharField()
+    # trail_difficulty = CharField()
     trail_sum = CharField()
-   # trail_img = CharField()
-    ## 
+
     natl_park = CharField()
     # will save the datetime of the moment it is saved
     date_saved = DateTimeField(default=datetime.datetime.now)
     state = CharField()
-    
 
     class Meta:
         database = db
+
+    def __str__(self):
+        trail_info = dict()
+        trail_info['id'] = self.trail_id
+        trail_info['name'] = self.trail_name
+        trail_info['length'] = self.trail_len
+        trail_info['summary'] = self.trail_sum
+        trail_info['national_park'] = self.natl_park
+        trail_info['state'] = self.state
+
+        return str(trail_info)
 
 
 def initialize_db():
     db._connect()
     db.create_tables([Trails], safe=True)
-
-
-
-
-
-#
-# class List:
-#     def __init__(self, list, identifier, expiry):
-#         self.list = list
-#         self.identifier = identifier
-#         self.expiry = expiry

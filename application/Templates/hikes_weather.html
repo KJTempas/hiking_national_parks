@@ -5,33 +5,48 @@
 
 <div class="content">
 
-    <h1>National Park and Trail Manager</h1>
+    <div class="jumbotron">
+    <h1 class="display-4">National Park and Trail Manager</h1>
+
+    <hr class="my-4">
+    <h2>Park Name: {{park}}</h2>
+    </p>
+    </div>
 
     {% if trail_list %}
-    <h2>Park Name: {{park}}</h2>
-        <form method="POST">
-            <table>
-                <tr>
-                    <th>Trail Name</th>
-                    <th>Trail Summary</th>
-                    <th>Trail Length</th>
-                    <th>  </th>
-                    <th>  </th>
+    <p><h2>Available Trail</h2></p>
 
+    <br>
+        <form method="POST">
+            <table class="table table-bordered">
+
+                <tr>
+                    <th scope="col">Trail Name</th>
+                    <th scope="col">Trail Summary</th>
+                    <th scope="col">Trail Length(in miles)</th>
+                    <th scope="col">Save Trail</th>
                 </tr>
+
+                <tbody>
                 {% for trail in trail_list %}
                     <tr>
                         <td name="trailname">{{trail['name']}}</td>
 
                         <td>{{trail['summary']}}</td>
                         <td>{{trail['length']}}</td>
+<!--                        https://stackoverflow.com/questions/51803008/send-table-data-via-form-to-flask-method-->
+                        <td name="trail-obj">
 
-                        <td ><button btn style="border:none; border-bottom: 1px solid black;" value="{{trail['name']}}">Save</button>
+                            <form method="POST">
+                                <input type="hidden" id="trail-obj" name="trail-obj" value=" {{ trail }} "/>
+                                <button type="submit" style="border:none; border-bottom: 1px solid black;">Save</button>
+                            </form>
 
                         </td>
 
                     </tr>
                 {% endfor %}
+                </tbody>
             </table>
         </form>
     {% else %}
@@ -39,42 +54,46 @@
     {% endif %}
 
     {% if weather_list %}
-        <h2>Park Name: {{park}}</h2>
-            <table>
-                <tr>
-                    <th>Forecast Date</th>
-                    <th>Temperature</th>
-                    <th>Description</th>
-                    <th>Humidity</th>
-                    <th>Rain</th>
-                </tr>
-                {% for weather in weather_list %}
-                    <tr>
-                        <td>{{weather['date']}}</td>
-                        <td>
-                            Min: {{weather['temp']['min']}}F<br>
-                            Max: {{weather['temp']['max']}}F<br>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h2>Weather Forecast at {{park}}</h2>
+        </div>
+    </div>
 
-                        </td>
-                        <td>{{weather['desc']}}</td>
-                        <td>{{weather['humidity']}}</td>
-                    {% if weather['rain'] is defined %}
-                        <td>{{weather['rain']}}</td>
-                    {% else %}
-                        <td>N/A</td>
-                    {% endif %}
+    <table class="table table-bordered">
+        <tr>
+            <th scope="col">Forecast Date</th>
+            <th scope="col">Temperature</th>
+            <th scope="col">Description</th>
+            <th scope="col">Humidity</th>
+            <th scope="col">Rain</th>
+        </tr>
+        {% for weather in weather_list %}
+            <tr>
+                <td>{{weather['date']}}</td>
+                <td>
+                    Min: {{weather['temp']['min']}}F<br>
+                    Max: {{weather['temp']['max']}}F<br>
 
+                </td>
+                <td>{{weather['desc']}}</td>
+                <td>{{weather['humidity']}}</td>
+            {% if weather['rain'] is defined %}
+                <td>{{weather['rain']}}</td>
+            {% else %}
+                <td>N/A</td>
+            {% endif %}
 
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
 
-                    </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-        <h4><i>No Weather Forecast available at {{park}}</i></h4>
-        {% endif %}
+    <h4><i>No Weather Forecast available at {{park}}</i></h4>
+    {% endif %}
 
     <form method="POST" >
-        <button type="back" name="back-page" value="back-page">Back to Previous Page</button>
+        <button type="button" name="back-page" class="btn btn-secondary btn-lg" value="back-page">Back to Previous Page</button>
         <input type="hidden" name="state" value="{{ state }}" />
     </form>
 

@@ -20,7 +20,6 @@ log = logging.getLogger('root')
 
 
 def get_trails(lat, lon):
-
     # see if trail_list is in cache; otherwise, do API call
     # identifier is lat/long
     latLon = f'{lat}+{lon}'
@@ -40,16 +39,17 @@ def get_trails(lat, lon):
             trail_list = list()
             list_of_trails = data['trails']
 
-
             if list_of_trails:
                 for trail in list_of_trails:
                     trail_list_w_info = dict()
-                    if trail['name'] and trail['length'] and trail['difficulty'] and trail['summary'] :
-
+                    if trail['name'] and trail['length'] and trail['difficulty'] and trail['summary']:
                         trail_list_w_info['name'] = trail['name']
                         trail_list_w_info['length'] = trail['length']
                         trail_list_w_info['difficulty'] = trail['difficulty']
-                        trail_list_w_info['summary'] = trail['summary']
+                        if trail['summary'] == 'Needs Summary':
+                            trail_list_w_info['summary'] = 'N/A'
+                        else:
+                            trail_list_w_info['summary'] = trail['summary']
 
                         trail_list.append(trail_list_w_info)
 

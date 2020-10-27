@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">Success!</h4>
+  <p>The following trail <strong>{{ trail_name }}</strong> has been deleted in the system.</p>
+<hr>
+<form method="POST" >
+        <button type="submit" name="back-page" value="back-page" class="btn btn-secondary btn-lg" >Back to Home Page</button>
+</form>
+
+</div>
+
+
+
+{% endblock %}

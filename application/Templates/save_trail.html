@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+<div class="content">
+
+    <h1>National Park and Trail Manager</h1>
+
+
+    {% if bookmark_list %}
+    <h3>Saved Trails</h3>
+    <table class="table table-bordered">
+        <th scope="col">#</th>
+        <th scope="col">Trail Name</th>
+        <th scope="col">Trail Length</th>
+        <th scope="col">Summary</th>
+        <th scope="col">National Park Name</th>
+        <th scope="col">State Code</th>
+        <th scope="col"></th>
+
+
+        <tbody>
+        {% for trail in bookmark_list %}
+            <tr>
+                <th scope="row">{{ loop.index}}</th>
+                <td>{{ trail.trail_name }}</td>
+                <td>{{ trail.trail_len }}</td>
+                <td>{{ trail.trail_sum }}</td>
+                <td>{{ trail.natl_park }}</td>
+                <td>{{ trail.state }}</td>
+                <td name="selected-row">
+
+                    <form method="POST">
+                        <input type="hidden" id="selected-row" name="selected-row" value=" {{ trail }} "/>
+                        <button type="submit" style="border:none; border-bottom: 1px solid black;">Delete</button>
+                    </form>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+    <br>
+    <p>
+      <h4><i>No saved trails in the system yet. Please go back to the Home Page to add some trails</i></h4>
+
+    </p>
+
+    {% endif %}
+
+    <form method="POST" >
+        <button type="submit" name="back-page" value="back-page" class="btn btn-secondary btn-lg">Back to Home Page</button>
+    </form>
+
+
+
+
+</div>
+
+{% endblock %}

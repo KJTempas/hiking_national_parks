@@ -24,6 +24,7 @@ API_URL = 'https://api.openweathermap.org/data/2.5/onecall?'
 
 
 def store_data(weather):
+
     weather_list = list()
     for day in weather['daily']:
         weather_dict = dict()
@@ -45,6 +46,7 @@ def store_data(weather):
             weather_dict['rain'] = temp_rain
         weather_list.append(weather_dict)
 
+
     return weather_list
 
 
@@ -58,7 +60,6 @@ def get_weather(lat, lon):
     # identifier is lat/long
     latLon = f'{lat}+{lon}_weather'
     cached_weather_list = cache.fetch((latLon), cache_list.DataList)
-    log.debug(cached_weather_list)
     if cached_weather_list:
         log.info('Weather API - Return from Cache')
         return cached_weather_list

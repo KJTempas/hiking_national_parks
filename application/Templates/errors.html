@@ -1,0 +1,22 @@
+
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+
+<div class="alert alert-danger" role="alert">
+  {% if error_code == '500' %}
+    <h4 class="alert-heading">Error Occured!</h4>
+  {% else %}
+    <h4 class="alert-heading">Bad Request!</h4>
+  {% endif %}
+    {{ error_message }}
+</div>
+
+
+
+<a href="\"><button type="button" name="back-page" value="back-page" class="btn btn-secondary btn-lg">Back to Home Page</button></a>
+
+
+{% endblock %}
