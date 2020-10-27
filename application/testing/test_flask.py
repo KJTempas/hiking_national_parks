@@ -5,26 +5,90 @@ import tempfile #needed?
 import unittest
 from unittest import TestCase
 
-import app
+from flask import Flask
+from flask_testing import TestCase
+from flask.testing import FlaskClient #palletsproject.com
+
+import app #what I'm going to test
 
 #from database import models #maybe needed for further testing
 #from models import Trails #when do you need . before models?
-app.testing = True
-client = app.test_client()
+#https://pythonhosted.org/Flask-Testing/
+
+
+class MyTest(TestCase): #from pythonhosted.org/Flask-Testing/
+    def create_app(self):
+        app = Flask(__name__)
+        app.config['TESTING'] = True 
+        return app
+
+#app.testing = True
+#client = app.test_client()
+
+class CustomClient(FlaskClient):
+    def __init__(self, *args, **kwargs):
+        self.authentication= kwargs.pop("authentication")
+        super(CustomClient,self).__init__( *args, **kwargs)
+app.test_client_class = CustomClient
+client = app.test_client(authentication='Basic ....')
+
+    #test_client_class = None
+
+flask.url_for(park_list.html)
+
+#another way to set up client/app? frm The testing skeleton section
+# @pytest.fixture#but this uses pytest, not unittest
+# def client():
+#   db_fd, application.app.config['DATABASE'] = tempfile.mkstemp()
+#   application.app.config['TESTING'] = True
+#   with application.app.test_client() as client:
+#       with flaskr.app.app_context():
+#           flaskr.init_db()
+#       yield client
+#   os.close(db_fd)
+#   os.unlink(flaskr.app.config['DATABASE'])
+
+
+    #testing JSON responses
+# @app.route('/parks')
+# def some_json():
+#     return jsonify(success=True)
+# class TestViews(TestCase):
+#     def test_some_json(self):
+#         response = self.client.get('/parks')
+#         self.assertEqals(response.json, dict(success=True))
+
+#next 2 classes from Opt to not render templates in https://pythonhosted.org/Flask-Testing/
+# class TestNotRenderTemplates(TestCase):
+#     render_templates = False
+#     def test_assert_not_process_the_template(self):
+#         response = self.client.get('/parks')
+#         assert '' == response.data
+
+class TestNotRenderTemplates(TestCase): 
+    render_templates = False
+    def test_assert_correct_template_used_to_display_parks(self):
+        response = self.client.get('/parks')
+        self.assert_template_used('parklist.html')
+
 
 class TestShowNatlParksList(TestCase):
     with app.test_client() as c:
-        rv = c.get('/', ) 
+        rv = c.get('/', )  #get the home page
         self.assertContains(rv, state_dict)
 
 
 class TestShowNatlParks_after_choosing_state(TestCase):
     fixtures = ['test_parks']
 
-    with app.test_client() as c:
+    with app.test_client() as c: #connect to the test_client
         #rv = c.get('?state_input=mn')  #rv?
         response = c.get('/parks', 'mn') #call GET method with this url providing mn as state_input
         self.assertContains(response, 'Grand Portage National Monument')
+
+#NOTE there is guidance - API test for response in pythonhosted.org/Flask-Testing/
+
+
 # class TestHomePage(TestCase):
 #     def test_home_page_shows_headers(self):
 #         #home_page_url = '/'
@@ -54,31 +118,9 @@ class TestShowNatlParks_after_choosing_state(TestCase):
 
 
 
-#this client fixture is called by each test
-
-    #below from flask.palletsproject.com/en/1.1.x/testing
-# @pytest.fixture
-# def client():
-#   db_fd, application.app.config['DATABASE'] = tempfile.mkstemp()
-#   flaskr.app.config['TESTING'] = True\
-#   with flaskr.app.test_client() as client:
-#       with flaskr.app.app_context():
-#           flaskr.init_db()
-#       yield client
-#   os.close(db_fd)
-#   os.unlink(flaskr.app.config['DATABASE'])
 
 
-# @pytest.fixture
-# def client():
-#   db_fd, flaskr.app.config['DATABASE'] = tempfile.mkstemp()
-#   flaskr.app.config['TESTING'] = True\
-#   with flaskr.app.test_client() as client:
-#       with flaskr.app.app_context():
-#           flaskr.init_db()
-#       yield client
-#   os.close(db_fd)
-#   os.unlink(flaskr.app.config['DATABASE'])
+
 
 #https://www.patricksoftwareblog.com/testing-a-flask-application-using-pytest/
 # @pytest.fixture
