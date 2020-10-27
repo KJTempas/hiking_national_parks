@@ -17,18 +17,27 @@
         <th scope="col">Summary</th>
         <th scope="col">National Park Name</th>
         <th scope="col">State Code</th>
+        <th scope="col"></th>
 
 
         <tbody>
         {{ bookmark_list }}
-        {% for each in bookmark_list %}
+        {% for trail in bookmark_list %}
             <tr>
                 <th scope="row">{{ loop.index}}</th>
-                <td>{{  }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ trail.trail_name }}</td>
+                <td>{{ trail.trail_len }}</td>
+                <td>{{ trail.trail_sum }}</td>
+                <td>{{ trail.natl_park }}</td>
+                <td>{{ trail.state }}</td>
+                <td name="selected-row">
+
+                    <form method="POST">
+                        <input type="hidden" id="selected-row" name="selected-row" value=" {{ trail.trail_id }} "/>
+                        <button type="submit" style="border:none; border-bottom: 1px solid black;">Delete</button>
+                    </form>
+
+                </td>
             </tr>
         {% endfor %}
         </tbody>

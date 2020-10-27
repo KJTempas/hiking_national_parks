@@ -53,10 +53,16 @@ def get_trail_weather(state, park, lat, lon):
             # database_functions.add_saved_trail(trail_name, length, summary, park, state)
             # then rendered the show_saved_trails page on the return
             # add_saved_trail(name, leng, summ, natl_pk, state)
+            try:
 
-            database_functions.add_trail(name=trail_obj['name'], leng=trail_obj['length'], summ=trail_obj['summary'],
-                                         natl_pk=park, state=state)
-            return redirect(url_for('show_saved_trails'))
+                database_functions.add_trail(name=trail_obj['name'], leng=trail_obj['length'], summ=trail_obj['summary'],
+                                             natl_pk=park, state=state)
+
+                return redirect(url_for('show_saved_trails'))
+            except Exception as e:
+
+                return render_template('error_page.html', trail_name=trail_obj['name'])
+
         elif request.form.get('back-page'):
             return redirect(url_for('show_national_park', states=state))
     else:
@@ -66,14 +72,18 @@ def get_trail_weather(state, park, lat, lon):
         return render_template('hikes_weather.html', park=park, trail_list=trail_list, weather_list=weather_list)
 
 
-@app.route('/savedtrails')
+@app.route('/savedtrails', methods=['GET', 'POST'])
 def show_saved_trails():
-    # trail_name, length, summary, park, state
+
+    if request.method == 'POST':
+        selected_row = request.form.get('selected-row')
+        log.info(selected_row)
+        return
+
     # Mainly retrieve the trail info from db
     saved_trails = database_functions.get_all_saved_trails()
-    log.info(saved_trails)
-    # pass bookmark_list to the template
 
+    # pass bookmark_list to the template
     return render_template('save_trail.html', bookmark_list=saved_trails)
 
 

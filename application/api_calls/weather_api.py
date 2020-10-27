@@ -24,6 +24,7 @@ API_URL = 'https://api.openweathermap.org/data/2.5/onecall?'
 
 
 def store_data(weather):
+
     weather_list = list()
     for day in weather['daily']:
         weather_dict = dict()
@@ -43,6 +44,7 @@ def store_data(weather):
             temp_rain = day['rain']
             weather_dict['rain'] = temp_rain
         weather_list.append(weather_dict)
+
 
     return weather_list
 

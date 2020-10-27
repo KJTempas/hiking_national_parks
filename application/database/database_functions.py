@@ -18,6 +18,7 @@ def add_trail(name, leng, summ, natl_pk, state):
         log.info(f'Added Trail: {name}  to the database.')
     except Exception as e:
         log.exception(f'Error occurred. More detail: {e}')
+        raise e
 
 
 def delete_trail_by_id(trail_id):
@@ -32,12 +33,15 @@ def delete_everything():
 
 def get_all_saved_trails():
     """ Returns everything in db"""
-    query = Trails.select()
+    query_01 = Trails.select()
+    all_trails = list()
 
-    for i in query:
+    for i in query_01:
+        all_trails.append(i)
         result = str(i)
 
-    return result
+
+    return all_trails
 
 
 # def get_id_by_trail_name(name):
