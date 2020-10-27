@@ -18,7 +18,6 @@ def add_trail(name, leng, summ, natl_pk, state):
         log.info(f'Added Trail: {name}  to the database.')
     except Exception as e:
 
-
         log.exception(f'Error occurred. More detail: {e}')
         raise e
 
