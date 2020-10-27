@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, abort, jsonify
 from api_calls import natlParks_api, hiking_api, weather_api, state_name_and_code
 from database import models, database_functions
+import peewee
 
 import logging
 
@@ -13,8 +14,12 @@ app = Flask(__name__)
 
 @app.before_request
 def before_request():
-    # create db if needed and connect
-    models.initialize_db()
+    try:
+
+        # create db if needed and connect
+        models.initialize_db()
+    except Exception as e:
+        abort(400, description=f'Page not found')
 
 
 @app.teardown_request
@@ -59,12 +64,12 @@ def get_trail_weather(state, park, lat, lon):
                                              natl_pk=park, state=state)
 
                 return redirect(url_for('show_saved_trails'))
+             # TODO need to figure out how to show specific error message
+            except peewee.IntegrityError as e:
+
+                abort(500, description=f'{trail_obj["name"]} is already in the database. Please try save another trail to the system.')
             except Exception as e:
-                log.debug(e)
-                if e == 'UNIQUE constraint failed: trails.trail_name':
-                    abort(500, description=f'{trail_obj["name"]} is already in the database.')
-                else:
-                    abort(500, description=f'{trail_obj["name"]} was not able to add in the database at this moment. '
+                abort(500, description=f'{trail_obj["name"]} was not able to add in the database at this moment. '
                                            f'Please try again later.')
         elif request.form.get('back-page'):
             return redirect(url_for('show_national_park', states=state))
@@ -78,12 +83,12 @@ def get_trail_weather(state, park, lat, lon):
 
 @app.errorhandler(500)
 def internal_error(error):
-    return render_template('errors.html', error_message=error.description)
+    return render_template('errors.html', error_code='400', error_message=error.description)
 
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('errors.html', error_message=error.description)
+    return render_template('errors.html', error_code='400', error_message=error.description)
 
 
 @app.route('/savedtrails', methods=['GET', 'POST'])
@@ -104,11 +109,15 @@ def show_saved_trails():
                                   f'Please try again later.')
 
     else:
-        # Mainly retrieve the trail info from db
-        saved_trails = database_functions.get_all_saved_trails()
+        try:
+            # Mainly retrieve the trail info from db
+            saved_trails = database_functions.get_all_saved_trails()
 
-        # pass bookmark_list to the template
-        return render_template('save_trail.html', bookmark_list=saved_trails)
+            # pass bookmark_list to the template
+            return render_template('save_trail.html', bookmark_list=saved_trails)
+        except:
+            abort(500,
+                  description=f'Unable to retrieved saved trail at this moment. Please try again later.')
 
 
 @app.route('/deleted/<trail_name>', methods=['GET', 'POST'])

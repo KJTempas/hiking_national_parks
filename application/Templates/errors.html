@@ -3,13 +3,20 @@
 
 
 {% block body %}
+
+
 <div class="alert alert-danger" role="alert">
-  <h4 class="alert-heading">Error Occured!</h4>
+  {% if error_code == 500 %}
+    <h4 class="alert-heading">Error Occured!</h4>
+  {% else %}
+    <h4 class="alert-heading">Page Not Found!</h4>
+  {% endif %}
     {{ error_message }}
 </div>
 
 
-<!--<a action="redirect(url_for('home'))"><button type="button" name="back-page" value="back-page" class="btn btn-secondary btn-lg">Back to Home Page</button></a>-->
+
+<a href="\"><button type="button" name="back-page" value="back-page" class="btn btn-secondary btn-lg">Back to Home Page</button></a>
 
 
 {% endblock %}
