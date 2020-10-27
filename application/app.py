@@ -64,7 +64,6 @@ def get_trail_weather(state, park, lat, lon):
                                              natl_pk=park, state=state)
 
                 return redirect(url_for('show_saved_trails'))
-             # TODO need to figure out how to show specific error message
             except peewee.IntegrityError as e:
                 abort(400, description=f'{trail_obj["name"]} is already in the database. Please try to save another trail to the system.')
             except Exception as e:
