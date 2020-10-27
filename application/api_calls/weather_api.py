@@ -36,6 +36,7 @@ def store_data(weather):
         for i in tmp_desc:
             temp_desc = i['description'].title()
         temp_humidity = day['humidity']
+        #weather_dict ['temp_min'] = 
         weather_dict['temp'] = temp_list
         weather_dict['desc'] = temp_desc
         weather_dict['humidity'] = temp_humidity
