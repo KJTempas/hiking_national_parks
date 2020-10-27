@@ -15,7 +15,6 @@ app = Flask(__name__)
 @app.before_request
 def before_request():
     try:
-
         # create db if needed and connect
         models.initialize_db()
     except Exception as e:
