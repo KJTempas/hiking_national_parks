@@ -35,8 +35,14 @@
                         <td>{{trail['summary']}}</td>
                         <td>{{trail['length']}}</td>
 <!--                        https://stackoverflow.com/questions/51803008/send-table-data-via-form-to-flask-method-->
-                        <td name="trail-obj"><button type="submit" style="border:none; border-bottom: 1px solid black;" value="{{trail['name']}}">Save</button>
-                        <input id="trail-obj" name="trail-obj"  value=" {{ trail['name'] }} "/></td>
+                        <td name="trail-obj">
+
+                            <form method="POST">
+                                <input id="trail-obj" name="trail-obj" value=" {{ trail }} "/>
+                                <button type="submit" style="border:none; border-bottom: 1px solid black;">Save</button>
+                            </form>
+
+                        </td>
 
                     </tr>
                 {% endfor %}

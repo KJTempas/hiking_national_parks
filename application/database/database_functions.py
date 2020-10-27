@@ -10,10 +10,14 @@ log = logging.getLogger('root')
 # use these functions to preform actions in the database
 # TODO: need to add exception
 
-def add_saved_trail(name, leng, summ, natl_pk, state):
-    Trails.create(trail_id=AutoField, trail_name=name, trail_len=leng, trail_sum=summ, natl_park=natl_pk,
-                  date_saved=DateTimeField, state=state)
-    log.info(f'Added Trail: {name}  to the database.')
+def add_trail(name, leng, summ, natl_pk, state):
+    try:
+
+        Trails.create(trail_name=name, trail_len=leng, trail_sum=summ, natl_park=natl_pk,
+                      state=state)
+        log.info(f'Added Trail: {name}  to the database.')
+    except Exception as e:
+        log.exception(f'Error occurred. More detail: {e}')
 
 
 def delete_trail_by_id(trail_id):
@@ -29,7 +33,11 @@ def delete_everything():
 def get_all_saved_trails():
     """ Returns everything in db"""
     query = Trails.select()
-    return list(query)
+
+    for i in query:
+        result = str(i)
+
+    return result
 
 
 # def get_id_by_trail_name(name):
