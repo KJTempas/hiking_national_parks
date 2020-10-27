@@ -9,29 +9,43 @@ import app
 
 #from database import models #maybe needed for further testing
 #from models import Trails #when do you need . before models?
+app.testing = True
+client = app.test_client()
+
+class TestShowNatlParksList(TestCase):
+    with app.test_client() as c:
+        rv = c.get('/', ) 
+        self.assertContains(rv, state_dict)
 
 
-class TestHomePage(TestCase):
-    def test_home_page_shows_headers(self):
-        #home_page_url = '/'
-        response = self.client.get('') #home page url - go to home page
-        self.assertTemplateUsed(response, 'templates/index.html')
-        #these are not really responses, but should appear on home page
-        self.assertContains(response, "National Park and Trail Manager") 
-        #self.assertContains(response, "Please select the state that you want to visit" )
-        self.assertContains(response, "Please select the state that you want to go" )
+class TestShowNatlParks_after_choosing_state(TestCase):
+    fixtures = ['test_parks']
+
+    with app.test_client() as c:
+        #rv = c.get('?state_input=mn')  #rv?
+        response = c.get('/parks', 'mn') #call GET method with this url providing mn as state_input
+        self.assertContains(response, 'Grand Portage National Monument')
+# class TestHomePage(TestCase):
+#     def test_home_page_shows_headers(self):
+#         #home_page_url = '/'
+#         response = self.client.get('') #home page url - go to home page
+#         self.assertTemplateUsed(response, 'templates/index.html')
+#         #these are not really responses, but should appear on home page
+#         self.assertContains(response, "National Park and Trail Manager") 
+#         #self.assertContains(response, "Please select the state that you want to visit" )
+#         self.assertContains(response, "Please select the state that you want to go" )
         
 
-class TestShowParksPage(TestCase):
-    def test_natl_parks_page(self):
-        response = self.client.get('/parks')
-        self.assertTemplateUsed(response, 'templates/park_list.html')
+# class TestShowParksPage(TestCase):
+#     def test_natl_parks_page(self):
+#         response = self.client.get('/parks')
+#         self.assertTemplateUsed(response, 'templates/park_list.html')
         
 
-class TestShowHikingAndWeatherPage(TestCase):
-    def test_hiking_and_weather_page(self):
-        response = self.client.get('/moreinfo/<state>/<park>/<lat>/<lon>')
-        self.assertTemplateUsed(response, 'templates/hikes_weather.html')
+# class TestShowHikingAndWeatherPage(TestCase):
+#     def test_hiking_and_weather_page(self):
+#         response = self.client.get('/moreinfo/<state>/<park>/<lat>/<lon>')
+#         self.assertTemplateUsed(response, 'templates/hikes_weather.html')
 
 #TODO make fixtures file with some national park names, etc
 #TODO ? make a separate fixtures file withe some hiking trail and weather data?

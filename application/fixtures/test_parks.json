@@ -1,0 +1,17 @@
+[
+    {
+    "url": "https://www.nps.gov/grpo/index.htm",
+    "fullName": "Grand Portage National Monument",
+    "id": "E463E13F-FCD4-41B3-AEF3-BA3199E04399",
+    "parkCode": "grpo",
+    "latitude": "47.99294217",
+    "longitude": "-89.75573031",
+    "designation":"National Monument",
+    "addresses": [
+        {
+        "postalCode": "55605",
+        "city": "Grand Portage",
+        "stateCode": "MN",
+        }]
+
+    } ] 
