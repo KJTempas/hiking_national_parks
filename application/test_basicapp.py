@@ -36,17 +36,19 @@ class BasicTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     # mock the api call and provide a list of response that will be return
-    # TODO should change the return_value into something similar to the request response
-    @patch('app.natlParks_api.get_response', return_value=['Sequoia', 'Mojave'])
+    @patch('app.natlParks_api.get_response', return_value= [{'name': 'Canyon de Chelly National Monument', 'lat': '36.14319567',
+                                                             'lon': '-109.3388303', 'designation': 'National Monument', 'city': 'Chinle'},
+                                                            {'name': 'Casa Grande Ruins National Monument', 'lat': '32.99702582',
+                                                             'lon': '-111.5325383', 'designation': 'National Monument', 'city': 'Coolidge'}])
     def test_state_page(self, get_response):
-        url = 'http://127.0.0.1:5000/parks?state=CA'
+        url = 'http://127.0.0.1:5000/parks?states=AZ'
         # assert list of parks on page
         # make request
         response = self.app.get(url)
-        print(response.data)
-        self.assertIn('Sequoia', get_response)
+        self.assertIn(b'Canyon de Chelly National Monument', response.data)
 
 
+    def test
     ###########
     # Example #
     ###########
