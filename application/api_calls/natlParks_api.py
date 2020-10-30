@@ -2,7 +2,7 @@ import os
 import requests
 import logging
 from dotenv import load_dotenv
-import re
+import html
 
 from cache import cache, cache_list
 from datetime import datetime
@@ -58,7 +58,7 @@ def get_info(data):
             park_list_w_info = dict()
 
             if park['fullName'] and park['latitude'] and park['longitude']:
-                modified_name = " ".join(re.findall("[a-zA-Z]+", park['fullName']))
+                modified_name = html.unescape(park['fullName'])
                 park_list_w_info['name'] = modified_name
 
             # if no longitude or latitude provided, set lon or lat to empty string
