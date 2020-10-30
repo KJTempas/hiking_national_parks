@@ -1,14 +1,15 @@
 import os
 import unittest
 from unittest.mock import patch
-import request
 
 from database import db_config
 from peewee import SqliteDatabase
 
-db_config.database_path = 'test_hiking_trails.db'
+db_config.database_path = 'test_trails.db'
 
 from database import models, database_functions
+import database
+from database.models import Trails
 from app import *
 
 APP_URL = 'http://127.0.0.1:5000/'
@@ -16,16 +17,14 @@ APP_URL = 'http://127.0.0.1:5000/'
 # https://www.patricksoftwareblog.com/unit-testing-a-flask-application/
 class BasicTests(unittest.TestCase):
 
-    
-
     # executed prior to each test
     def setUp(self):
         app.config['TESTING'] = True
         app.config['DEBUG'] = False
         # Create a new DB
-        self.hiking_trails_db = models.initialize_db()
+        self.hiking_trails_db = database.models.initialize_db()
         # Clear all tables in DB
-        models.Trails.delete().execute()
+        Trails.delete().execute()
 
         self.app = app.test_client()
         self.assertEqual(app.debug, False)
@@ -58,77 +57,71 @@ class BasicTests(unittest.TestCase):
     def test_get_info_for_park(self, get_hiking, get_weather):
         url = APP_URL + '/moreinfo/MN/Voyageurs%20National%20Park/48.48370609/-92.8382913'
 
-        #  am I testing the right thing here - looks good
         response = self.app.get(url)
         self.assertIn(b'National Parks Marathon Project - Voyageurs National Park', response.data)
         self.assertIn(b'Overcast Clouds', response.data)
         self.assertIn(b'blue', response.data)
 
-    @patch('database.database_functions.add_trail')
-    def test_save_trail(self, mock_add_trail):
-        # !QUESTION: I am not sure how to mock the database_functions.add_trails for this one and what should I be asserting when it has been successfully being added to the database
-        # !QUESTION2 : How can I add some sample data into the database?
-        # !QUESTION 3 : should I being using requests library for this?
-        url = APP_URL + '/moreinfo/MN/Voyageurs%20National%20Park/48.48370609/-92.8382913'
-        response = self.app.post(url)
-        log.info(response)
-        self.fail()
+    def test_save_trail(self):
+        # url = APP_URL + '/moreinfo/MN/Voyageurs%20National%20Park/48.48370609/-92.8382913'
+        database_functions.add_trail('test_park',12,'this is a sample park', 'sample national park', 'SAMPLE')
+        tmp_01 = database.database_functions.get_all_saved_trails()
+
+        url = APP_URL + '/savedtrails'
+
+        response = self.app.get(url)
+       
+        self.assertIn(b'test_park', response.data)
     
-    # TODO: this function should be redirect to the error page
-    @patch('database_functions.add_trail')
-    @patch('code.abort')
-    def test_save_trail_already_saved(self, add_trail, mock_abort):
+    # # TODO: this function should be redirect to the error page
+    # @patch('database_functions.add_trail')
+    # @patch('code.abort')
+    # def test_save_trail_already_saved(self, add_trail, mock_abort):
         
-        # can I use what I have above and do a mock_abort here? `mock_abort.assert_called_once_with(400, 'error')`
-        # add some data with add_trails function?
+    #     # can I use what I have above and do a mock_abort here? `mock_abort.assert_called_once_with(400, 'error')`
+    #     # add some data with add_trails function?
         
-        # call your code's add_trail method directly and add a trail
-        # make a request to your server e.g.
-        response = self.app.post(add_trail_url) 
-        # assert the response code is 400
-        # you can also directly check the database and ensure the duplicate is not added 
-        self.fail()
-        
-
-    def test_redirect_page(self):
-        # !QUESTION: Not sure how to mock clicking on button for this one. Use Case will be clicking the button on page to be redirect to another page. How to grab the specific page button? and how to mock clicking it?
-        # I don't know if you need this test. It's not a priority. 
-        self.fail()
+    #     # call your code's add_trail method directly and add a trail
+    #     # make a request to your server e.g.
+    #     response = self.app.post(add_trail_url) 
+    #     # assert the response code is 400
+    #     # you can also directly check the database and ensure the duplicate is not added 
+    #     self.fail()
 
         
-    def test_state_page_bad_params(self):
-        # !QUESTION: how to test this? We have added try catch for the nationalpark api call but it does not throw any error? 
-        # Should we be checking it on flask app instead ?if so what exception should be thrown? 
-        # you should not throw exceptions from the flask routes. The back end methods may throw exceptions to represent an error condition
-        # and your flask route handler would have try-except for that 
-        # Always return a HTTP response, even if it's a 500 response. 
-        url = APP_URL+'parks?states=empty'
-        # make the request
-        # your server should return a 400 bad request or a 404 not found for this request.  So make the request and assert the status code 
-        # is as expected. 
-        self.fail()
+    # def test_state_page_bad_params(self):
+    #     # !QUESTION: how to test this? We have added try catch for the nationalpark api call but it does not throw any error? 
+    #     # Should we be checking it on flask app instead ?if so what exception should be thrown? 
+    #     # you should not throw exceptions from the flask routes. The back end methods may throw exceptions to represent an error condition
+    #     # and your flask route handler would have try-except for that 
+    #     # Always return a HTTP response, even if it's a 500 response. 
+    #     url = APP_URL+'parks?states=empty'
+    #     # make the request
+    #     # your server should return a 400 bad request or a 404 not found for this request.  So make the request and assert the status code 
+    #     # is as expected. 
+    #     self.fail()
 
-    # TODO test for bad url or non-existent api call like state that does not exist etc...
-    # test these URLs, the test would be very similar to the one above
-    #         url = APP_URL+'parks?somethingelse=whatever'  
-    #         url = APP_URL+'parks'  
+    # # TODO test for bad url or non-existent api call like state that does not exist etc...
+    # # test these URLs, the test would be very similar to the one above
+    # #         url = APP_URL+'parks?somethingelse=whatever'  
+    # #         url = APP_URL+'parks'  
 
-    def test_invalid_state_in_state_page(self):
-        self.fail()
+    # def test_invalid_state_in_state_page(self):
+    #     self.fail()
 
-    def test_invalid_lat_lon_on_api_call(self):
-        # !QUESTION: Not sure where to catch the exception where the lat and long is empty like this `http://localhost:5000/moreinfo/AL/Freedom%20Riders%20National%20Monument//` only able to catch the exception when the lat and lon is random number
-        # !QUESTION: Should I be using the self.app.get(url) and mock the abort page here too?
-        # you don't need to mock the abort page. Again make the request and check you get a response with the appropriate status code
-        # the flask app route needs to be checking the parameters and returning 400 or 404 if they don't make sense
-        self.fail()
+    # def test_invalid_lat_lon_on_api_call(self):
+    #     # !QUESTION: Not sure where to catch the exception where the lat and long is empty like this `http://localhost:5000/moreinfo/AL/Freedom%20Riders%20National%20Monument//` only able to catch the exception when the lat and lon is random number
+    #     # !QUESTION: Should I be using the self.app.get(url) and mock the abort page here too?
+    #     # you don't need to mock the abort page. Again make the request and check you get a response with the appropriate status code
+    #     # the flask app route needs to be checking the parameters and returning 400 or 404 if they don't make sense
+    #     self.fail()
 
-    def test_api_call_is_down(self):
-        # !QUESTION: for this one will this be the abort(500) page? or we will need to add an additional exception in the flask app?
-        # mock the api call(s) to return error or raise exception, whatever they do if the server is down
-        # make a call
-        # assert 500 error code with the message you set. 
-        self.fail()
+    # def test_api_call_is_down(self):
+    #     # !QUESTION: for this one will this be the abort(500) page? or we will need to add an additional exception in the flask app?
+    #     # mock the api call(s) to return error or raise exception, whatever they do if the server is down
+    #     # make a call
+    #     # assert 500 error code with the message you set. 
+    #     self.fail()
 
 
 if __name__ == "__main__":

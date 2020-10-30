@@ -10,7 +10,7 @@ import time
 
 cached_time = 26280000
 
-load_dotenv('application/.env')
+load_dotenv('.env')
 
 NTL_PARK_KEY = os.environ.get('NATLPARKS_KEY') #key stored in environment variable
 API_URL = 'https://developer.nps.gov/api/v1/parks'
@@ -29,7 +29,7 @@ def get_response(state_input):
         return cached_park_list
     else:
         log.info('National Park API - return from API call')
-
+        
         try:
             query = {'stateCode': state_input, 'api_key': NTL_PARK_KEY}
             response = requests.get(API_URL, params=query)

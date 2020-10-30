@@ -9,7 +9,7 @@ import time
 
 cached_time = 26280000
 
-load_dotenv('application/.env')
+load_dotenv('.env')
 
 HIKING_KEY = os.environ.get('HIKING_KEY')
 HIKING_URL = 'https://www.hikingproject.com/data/get-trails'

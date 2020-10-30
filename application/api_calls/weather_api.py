@@ -11,7 +11,7 @@ import time
 
 cached_time = 86400
 
-load_dotenv('application/.env')
+load_dotenv('.env')
 
 # Logger
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s', datefmt='%d-%m-%y %H:%M:%S')

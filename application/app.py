@@ -6,6 +6,9 @@ import peewee
 
 import logging
 
+class AppError(Exception):
+    pass
+
 # Logger
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s', datefmt='%d-%m-%y %H:%M:%S')
 log = logging.getLogger('root')
@@ -33,9 +36,12 @@ def home():
     if request.method == 'POST':
         return redirect(url_for('show_saved_trails'))
     else:
-        state_dict = state_name_and_code.get_state_abbrev()
+        try:
+            state_dict = state_name_and_code.get_state_abbrev()
 
-        return render_template('index.html', states_dict=state_dict)
+            return render_template('index.html', states_dict=state_dict)
+        except Exception as e:
+            abort(500, description =f'Error')
 
 
 @app.route('/parks', methods=['GET', 'POST'])
@@ -43,14 +49,19 @@ def show_national_park():
     if request.method == 'POST':
         return redirect(url_for('home'))
     else:
-        # TODO: Add a try catch here??
-        
-        state_input = request.args.get('states')
 
-        park_list = natlParks_api.get_response(state_input.lower())
+        try:
+            state_input = request.args.get('states')
+            state_dict = state_name_and_code.get_state_abbrev()
+            if state_input not in state_dict.values():
+                raise AppError('User has entered invalid input.')
+            
+            park_list = natlParks_api.get_response(state_input.lower())
 
-        return render_template('park_list.html', park_list=park_list, state=state_input)
-
+            return render_template('park_list.html', park_list=park_list, state=state_input)
+        except Exception as e:
+            log.error(e)
+            abort(400, description =f'Sorry we can not process your request at this moment. Please try again later or double check your URL.')
 
 
 
@@ -76,7 +87,8 @@ def get_trail_weather(state, park, lat, lon):
             return redirect(url_for('show_national_park', states=state))
     else:
         try:
-
+            if lat is None:
+                raise AppError('Missing lat or long value')
             trail_list = hiking_api.get_trails(lat, lon)
             weather_list = weather_api.get_weather(lat, lon)
 
@@ -95,6 +107,9 @@ def internal_error(error):
 def not_found(error):
     return render_template('errors.html', error_code='400', error_message=error.description)
 
+@app.errorhandler(404)
+def missing_params(error):
+    return render_template('errors.html', error_code='404', error_message=error.description)
 
 @app.route('/savedtrails', methods=['GET', 'POST'])
 def show_saved_trails():
@@ -103,7 +118,6 @@ def show_saved_trails():
             return redirect(url_for('home'))
         else:
             try:
-
                 selected_row = request.form.get('selected-row')
                 database_functions.delete_trail_by_id(eval(selected_row)['id'])
 
@@ -136,3 +150,4 @@ def delete_trail(trail_name):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
