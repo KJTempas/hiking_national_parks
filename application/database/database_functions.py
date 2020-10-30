@@ -8,8 +8,6 @@ log = logging.getLogger('root')
 
 
 # use these functions to preform actions in the database
-# TODO: need to add exception
-
 def add_trail(name, leng, summ, natl_pk, state):
     try:
 
