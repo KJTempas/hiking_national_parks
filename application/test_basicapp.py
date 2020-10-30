@@ -1,7 +1,7 @@
 import os
 import unittest
 from unittest.mock import patch
-import reqest
+import request
 
 from database import db_config
 from peewee import SqliteDatabase
