@@ -63,9 +63,10 @@ class BasicTests(unittest.TestCase):
         self.assertIn(b'Overcast Clouds', response.data)
         self.assertIn(b'blue', response.data)
 
-    # @patch('database_functions.add_trail')
-    # def test_save_trail(self):
-    #     self.fail()
+    @patch('database_functions.add_trail')
+    def test_save_trail(self, mock_add_trail):
+
+        self.fail()
     #
     # # TODO: this function should be redirect to the error page
     # @patch('database_functions.add_trail')
