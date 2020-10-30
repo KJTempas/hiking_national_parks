@@ -58,6 +58,7 @@ class BasicTests(unittest.TestCase):
     def test_get_info_for_park(self, get_hiking, get_weather):
         url = APP_URL + '/moreinfo/MN/Voyageurs%20National%20Park/48.48370609/-92.8382913'
 
+        # !Question: am I testing the right thing here?
         response = self.app.get(url)
         self.assertIn(b'National Parks Marathon Project - Voyageurs National Park', response.data)
         self.assertIn(b'Overcast Clouds', response.data)
