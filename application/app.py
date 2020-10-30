@@ -40,6 +40,7 @@ def home():
             state_dict = state_name_and_code.get_state_abbrev()
 
             return render_template('index.html', states_dict=state_dict)
+        # TODO here
         except Exception as e:
             abort(500, description =f'Error')
 
@@ -68,6 +69,8 @@ def show_national_park():
 @app.route('/moreinfo/<state>/<park>/<lat>/<lon>', methods=['GET', 'POST'])
 def get_trail_weather(state, park, lat, lon):
     if request.method == 'POST':
+        # TODO: NEED TO REMOVE THIS
+        log.info(request.form.to_dict())
         if request.form.get('trail-obj'):
             trail_obj = eval(request.form.get('trail-obj'))
             # Save the db here
@@ -80,15 +83,18 @@ def get_trail_weather(state, park, lat, lon):
                 return redirect(url_for('show_saved_trails'))
             except peewee.IntegrityError as e:
                 abort(400, description=f'{trail_obj["name"]} is already in the database. Please try to save another trail to the system.')
+
             except Exception as e:
                 abort(500, description=f'{trail_obj["name"]} was not able to add in the database at this moment. '
                                            f'Please try again later.')
         elif request.form.get('back-page'):
             return redirect(url_for('show_national_park', states=state))
+        else:
+            abort(400, 'No data provided')
     else:
         try:
-            if lat is None:
-                raise AppError('Missing lat or long value')
+            if lat is None or lon is None:
+                raise AppError('Missing lat or lon value')
             trail_list = hiking_api.get_trails(lat, lon)
             weather_list = weather_api.get_weather(lat, lon)
 

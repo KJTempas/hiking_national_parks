@@ -1,3 +1,4 @@
+import peewee
 from peewee import *
 from .models import Trails
 import logging
@@ -14,8 +15,10 @@ def add_trail(name, leng, summ, natl_pk, state):
         Trails.create(trail_name=name, trail_len=leng, trail_sum=summ, natl_park=natl_pk,
                       state=state)
         log.info(f'Added Trail: {name}  to the database.')
+    except peewee.IntegrityError as e:
+        log.exception(f'Error occurred. More detail: {e}')
+        raise e
     except Exception as e:
-
         log.exception(f'Error occurred. More detail: {e}')
         raise e
 
