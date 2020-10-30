@@ -43,12 +43,15 @@ def show_national_park():
     if request.method == 'POST':
         return redirect(url_for('home'))
     else:
-
+        # TODO: Add a try catch here??
+        
         state_input = request.args.get('states')
 
         park_list = natlParks_api.get_response(state_input.lower())
 
         return render_template('park_list.html', park_list=park_list, state=state_input)
+
+
 
 
 @app.route('/moreinfo/<state>/<park>/<lat>/<lon>', methods=['GET', 'POST'])
@@ -72,11 +75,15 @@ def get_trail_weather(state, park, lat, lon):
         elif request.form.get('back-page'):
             return redirect(url_for('show_national_park', states=state))
     else:
+        try:
 
-        trail_list = hiking_api.get_trails(lat, lon)
-        weather_list = weather_api.get_weather(lat, lon)
+            trail_list = hiking_api.get_trails(lat, lon)
+            weather_list = weather_api.get_weather(lat, lon)
 
-        return render_template('hikes_weather.html', park=park, trail_list=trail_list, weather_list=weather_list)
+            return render_template('hikes_weather.html', park=park, trail_list=trail_list, weather_list=weather_list)
+        except Exception as e:
+            log.error(e)
+            abort(400, description=f'Invalid URL')
 
 
 @app.errorhandler(500)
