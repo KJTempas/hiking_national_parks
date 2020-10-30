@@ -53,33 +53,41 @@ class BasicTests(unittest.TestCase):
     @patch('app.hiking_api.get_trails',return_value = [{'name': 'National Parks Marathon Project - Voyageurs National Park', 'length': 25.4, 'difficulty': 'blue', 'summary': 'An amazing green experience running in dense forest.'}, {'name': 'Locator Lake Trail', 'length': 2, 'difficulty': 'blue', 'summary': 'This trail is awesome!'}])
     @patch('app.weather_api.get_weather',return_value = [{'date': '2020-10-29', 'temp': {'day': 25.3, 'min': 17.67, 'max': 26.83, 'night': 21.78, 'eve': 22.89, 'morn': 17.67}, 'desc': 'Overcast Clouds', 'humidity': 58}, {'date': '2020-10-30', 'temp': {'day': 33.91, 'min': 20.82, 'max': 35.85, 'night': 30.96, 'eve': 32.92, 'morn': 20.82}, 'desc': 'Broken Clouds', 'humidity': 89}])
     def test_get_info_for_park(self, get_hiking, get_weather):
-        # TODO here!
         url = LOCAL_HOST_URL + '/moreinfo/MN/Voyageurs%20National%20Park/48.48370609/-92.8382913'
-        # 'http://localhost:5000/moreinfo/MN/Voyageurs%20National%20Park/48.48370609/-92.8382913'
 
         response = self.app.get(url)
-        # print(response.data)
         self.assertIn(b'National Parks Marathon Project - Voyageurs National Park', response.data)
         self.assertIn(b'Overcast Clouds', response.data)
         self.assertIn(b'blue', response.data)
 
-    @patch('database_functions.add_trail')
+    @patch('database.database_functions.add_trail')
     def test_save_trail(self, mock_add_trail):
-
+        url = LOCAL_HOST_URL + '/moreinfo/MN/Voyageurs%20National%20Park/48.48370609/-92.8382913'
+        response = self.app.post(url)
+        log.info(response)
         self.fail()
-    #
-    # # TODO: this function should be redirect to the error page
-    # @patch('database_functions.add_trail')
-    # @patch('code.abort')
-    # def test_save_trail_already_saved(self, add_trail, mock_abort):
-    #     # TODO add some data with add_trails function?
-    #     # then assert called_once_with
-    #     self.fail()
+    
+    # TODO: this function should be redirect to the error page
+    @patch('database_functions.add_trail')
+    @patch('code.abort')
+    def test_save_trail_already_saved(self, add_trail, mock_abort):
+        # TODO add some data with add_trails function?
+        # then assert called_once_with
+        self.fail()
 
-    # def test_state_page_bad_params(self):
-    #     self.fail()
+    def test_state_page_bad_params(self):
+        self.fail()
 
     # TODO test for bad url or non-existent api call like state that does not exist etc...
+
+    def test_invalid_state_in_state_page(self):
+        self.fail()
+
+    def test_invalid_lat_lon_on_api_call(self):
+        self.fail()
+
+    def test_api_call_is_down(self):
+        self.fail()
 
 
 if __name__ == "__main__":
