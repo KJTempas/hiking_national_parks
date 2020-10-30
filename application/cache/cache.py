@@ -26,5 +26,5 @@ def add(DataList):
 
 
 def fetch(identifier, cls):
-    cached_object = memcache_client.get(identifier)  # .get(key)
+    cached_object = memcache_client.get(identifier)  # identifier is state_code or lat/lon
     return cached_object

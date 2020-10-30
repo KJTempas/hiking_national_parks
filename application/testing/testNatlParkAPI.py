@@ -1,9 +1,7 @@
 import unittest
 from unittest import TestCase
-from unittest.mock import patch #maybe not needed
 
 import api_calls
-#import natlParks_api
 from api_calls import natlParks_api
 
 class TestNatlParkAPI(TestCase):

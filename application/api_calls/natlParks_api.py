@@ -12,7 +12,7 @@ cached_time = 26280000
 
 load_dotenv('application/.env')
 
-NTL_PARK_KEY = os.environ.get('NATLPARKS_KEY')
+NTL_PARK_KEY = os.environ.get('NATLPARKS_KEY') #key stored in environment variable
 API_URL = 'https://developer.nps.gov/api/v1/parks'
 
 # Logger
@@ -25,12 +25,10 @@ def get_response(state_input):
     # identifier is state_input
     cached_park_list = cache.fetch(state_input, cache_list.DataList)
     if cached_park_list:
-        # print('return from cache')# this will be deleted later
         log.info('National Park API - Return from Cache')
         return cached_park_list
     else:
         log.info('National Park API - return from API call')
-        # print('return from API call') #this will be removed
 
         try:
             query = {'stateCode': state_input, 'api_key': NTL_PARK_KEY}
@@ -38,11 +36,10 @@ def get_response(state_input):
             response.raise_for_status()  # will raise an exception for 400(client) or 500(server) errors
             data = response.json()
             park_list = get_info(data)
-
+                                    #send to the cache the park list(data), identifier(state_input) and expiry
             natlParks_data_list_for_cache = cache_list.DataList(park_list, state_input, now_plus_expiry())
 
             cache.add(natlParks_data_list_for_cache)
-
             return park_list
         except Exception as ex:
             log.exception(ex)
@@ -51,7 +48,6 @@ def get_response(state_input):
 
 def get_info(data):
     try:
-
         park_list = list()
         list_of_parks = data['data']
         for park in list_of_parks:
@@ -60,22 +56,17 @@ def get_info(data):
             if park['fullName'] and park['latitude'] and park['longitude']:
                 modified_name = " ".join(re.findall("[a-zA-Z]+", park['fullName']))
                 park_list_w_info['name'] = modified_name
-
-            # if no longitude or latitude provided, set lon or lat to empty string
-                park_list_w_info['lat'] = park['latitude'] #if park['latitude'] else ''
-                park_list_w_info['lon'] = park['longitude'] #if park['longitude'] else ''
+                park_list_w_info['lat'] = park['latitude'] 
+                park_list_w_info['lon'] = park['longitude'] 
                 
- 
                 if park['designation']:
                     park_list_w_info['designation'] = park['designation']
-
                 if park['addresses']:
                     park_list_w_info['city'] = park['addresses'][0]['city']
 
                 park_list.append(park_list_w_info)
-
         return park_list
-
+    
     except Exception as e:
         log.exception(e)
         raise e
