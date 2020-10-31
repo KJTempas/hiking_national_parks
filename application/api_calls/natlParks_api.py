@@ -21,8 +21,8 @@ log = logging.getLogger('root')
 
 
 def get_response(state_input):
-    # see if park_list is in cache; otherwise, do API call
-    # identifier is state_input
+    # Check if park_list is in cache; otherwise, make a request on the API
+    # Indentifier for National Park API is <state-input>
     cached_park_list = cache.fetch(state_input, cache_list.DataList)
     if cached_park_list:
         log.info('National Park API - Return from Cache')
@@ -36,7 +36,7 @@ def get_response(state_input):
             response.raise_for_status()  # will raise an exception for 400(client) or 500(server) errors
             data = response.json()
             park_list = get_info(data)
-                                    #send to the cache the park list(data), identifier(state_input) and expiry
+            #send to the cache the park list(data), identifier(state_input) and expiry
             natlParks_data_list_for_cache = cache_list.DataList(park_list, state_input, now_plus_expiry())
 
             cache.add(natlParks_data_list_for_cache)
