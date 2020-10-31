@@ -7,12 +7,11 @@ db = SqliteDatabase(database_path)
 
 
 class Trails(Model):
-    # db id
+    # DB ID
     trail_id = AutoField()
     # hiking API returned items
     trail_name = CharField(unique=True)
     trail_len = FloatField()
-    # trail_difficulty = CharField()
     trail_sum = CharField()
 
     natl_park = CharField()

@@ -13,7 +13,8 @@ Once `.env` has been created, start a new virtual env by running the following c
 
 ## Memcached 
 This web application requires memcached. Here are instruction on how to setup the memcached on your machine.
-1. Install `memcached` on your local machine. For Mac user install `memcached` with `homebrew`, [here](https://gist.github.com/tomysmile/ba6c0ba4488ea51e6423d492985a7953#step-1--install-homebrew) is an simple instruction to install `homebrew` as well as `memcached` (follow step 1 and 2 on the link) . For Windows user you can install `memcached` from [here](https://memcached.org/)
+
+1. Install `memcached` on your local machine. For Mac user install `memcached` with `homebrew`, [here](https://gist.github.com/tomysmile/ba6c0ba4488ea51e6423d492985a7953#step-1--install-homebrew) is an simple instruction to install `homebrew` as well as `memcached` (follow step 1 and 2 on the link) .For Windows user you can install `memcached` from [here](https://memcached.org/)
 2. You also need to install Python client for memcached via this command `pip install pymemcache`
 3. Then run memcached with `brew services start memcached` (for Mac user) or `memcached.exe -d start` (for Windows user), and leave it running while you starting the Flask web application
 
@@ -32,3 +33,11 @@ This web application requires memcached. Here are instruction on how to setup th
 Flask unittesting is located in the `application` folder. Run the tests by running `python3 -m unittest test_flask_app.py`
 
 Other testing like API call and database are located under the `testing` folder. Run these with  `python3 -m unittest testing/<test-file-name-here>.py ` if your current working directory is `application` folder.
+
+
+# TroubleShooting
+
+If you are facing any issues in running the Flask web application, make sure to change your directory to the `application` before running `python3 app.py`. Also make sure that you have installed all the requirements using the following command `pip install -r requirements.txt`.
+
+If none of the solutions work for you or you faced other issues, feel free to open an Issue, one of the collaborator will work on fixing the issues or provide you with a solution. 
+

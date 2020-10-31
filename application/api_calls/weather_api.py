@@ -45,16 +45,12 @@ def store_data(weather):
             temp_rain = day['rain']
             weather_dict['rain'] = temp_rain
         weather_list.append(weather_dict)
-
-
     return weather_list
 
 
 def get_weather(lat, lon):
-    
-
-    # see if trail_list is in cache; otherwise, do API call
-    # identifier is lat/long
+    # Check if weather_list is in cache; otherwise, make a request on the API
+    # Indentifier for Weather API is <lat><lon>_weather
     latLon = f'{lat}+{lon}_weather'
     cached_weather_list = cache.fetch((latLon), cache_list.DataList)
     if cached_weather_list:
@@ -83,7 +79,6 @@ def get_weather(lat, lon):
             log.exception(f'Error occurred. More detail: {e}')
             log.exception(f'Error Message from request: {response.text}')
             raise e
-
 
 def now_plus_expiry():
     now = int(time.time())

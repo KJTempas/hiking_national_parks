@@ -96,7 +96,7 @@ def get_trail_weather(state, park, lat, lon):
             abort(400, 'No data provided.')
     else:
         try:
-            if not state.isalpha() or not park.replace(' ','').isalpha():
+            if not state.isalpha() or not park.replace(' ','').replace('&','').isalpha():
                 raise AppError('The URL is invalid. Please double check your spelling.')
             else:
                 trail_list = hiking_api.get_trails(lat, lon)
@@ -142,7 +142,10 @@ def show_saved_trails():
 @app.route('/deleted/<trail_name>', methods=['GET', 'POST'])
 def delete_trail(trail_name):
     if request.method == 'POST':
-        return redirect(url_for('home'))
+        if request.form.get('back-page'):
+            return redirect(url_for('show_saved_trails'))
+        else:
+            return redirect(url_for('home'))
     else:
         return render_template('deleted_confirmation.html', trail_name=trail_name)
 
