@@ -32,3 +32,9 @@ This web application requires memcached and here is the instruction on how to se
 For the Flask unittesting, it locates under `application` folder. You can run the testing by running `python3 -m unittest test_flask_app.py`
 
 As for other testing like API  call and database, they are located under th `testing` folder, so you will need to run with this `python3 -m unittest testing/<test-file-name-here>.py ` if your current working directory is `application` folder
+
+# TroubleShooting
+
+If you are facing any issues in running the Flask web application, makesure to change your directory to the `application` before running `python3 app.py`. Also makesure that you have installed all the requirements using the following command `pip install -r requirements.txt`.
+
+If none of the solutions work for you or you faced other issues, feel free to open an Issue, one of the collaborator will work on fixing the issues or provide you with a solution. 

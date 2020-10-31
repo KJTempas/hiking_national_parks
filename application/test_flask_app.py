@@ -29,7 +29,6 @@ class BasicTests(unittest.TestCase):
         self.app = app.test_client()
         self.assertEqual(app.debug, False)
         
-
     # executed after each test
     def tearDown(self):
         pass
@@ -59,7 +58,7 @@ class BasicTests(unittest.TestCase):
 
     # mock hiking and weather api call 
     # which will return some sample data 
-    @patch('app.hiking_api.get_trails',return_value = [{'name': 'National Parks Marathon Project - Voyageurs National Park', 'length': 25.4, 'difficulty': 'blue', 'summary': 'An amazing green experience running in dense forest.'}, {'name': 'Locator Lake Trail', 'length': 2, 'difficulty': 'blue', 'summary': 'This trail is awesome!'}])
+    @patch('app.hiking_api.get_trails',return_value = [{'name': 'National Parks Marathon Project - Voyageurs National Park', 'length': 25.4, 'summary': 'An amazing green experience running in dense forest.'}, {'name': 'Locator Lake Trail', 'length': 2, 'summary': 'This trail is awesome!'}])
     @patch('app.weather_api.get_weather',return_value = [{'date': '2020-10-29', 'temp': {'day': 25.3, 'min': 17.67, 'max': 26.83, 'night': 21.78, 'eve': 22.89, 'morn': 17.67}, 'desc': 'Overcast Clouds', 'humidity': 58}, {'date': '2020-10-30', 'temp': {'day': 33.91, 'min': 20.82, 'max': 35.85, 'night': 30.96, 'eve': 32.92, 'morn': 20.82}, 'desc': 'Broken Clouds', 'humidity': 89}])
     def test_get_info_for_park(self, get_hiking, get_weather):
         
@@ -72,14 +71,13 @@ class BasicTests(unittest.TestCase):
         # Check if the expected value is in the page or the response
         self.assertIn(b'National Parks Marathon Project - Voyageurs National Park', response.data)
         self.assertIn(b'Overcast Clouds', response.data)
-        self.assertIn(b'blue', response.data)
     
     def test_save_trail(self):
         # Route/URL to save trails
         url = APP_URL + '/moreinfo/AL/Little%20River%20Canyon%20National%20Preserve/34.41461863/-85.61734327'
 
         # Make request
-        response = self.app.post(url, data={'trail-obj': " {'name': 'Cruiser Lake Trail', 'length': 10.9, 'difficulty': 'greenBlue', 'summary': 'N/A'} "},follow_redirects=True)
+        response = self.app.post(url, data={'trail-obj': " {'name': 'Cruiser Lake Trail', 'length': 10.9, 'summary': 'N/A'} "},follow_redirects=True)
         
         # Check if the expected value is in the page or the response
         self.assertIn(b'Cruiser Lake Trail', response.data)
@@ -89,8 +87,8 @@ class BasicTests(unittest.TestCase):
     
     def test_save_trail_already_saved(self):
         # Some sample trail object to test saving into the database
-        trail_01 = {'trail-obj': " {'name': 'Angels Landing', 'length': 4.4, 'difficulty': 'black', 'summary': 'One of the most memorable National Park hikes. Heavenly views await at the end of an exposed ridge.'} "}
-        trail_02 = {'trail-obj': " {'name': 'Canyon Overlook Trail', 'length': 0.7, 'difficulty': 'blue', 'summary': 'A short trail that leads to incredible views of Zion Canyon.'} "}
+        trail_01 = {'trail-obj': " {'name': 'Angels Landing', 'length': 4.4, 'summary': 'One of the most memorable National Park hikes. Heavenly views await at the end of an exposed ridge.'} "}
+        trail_02 = {'trail-obj': " {'name': 'Canyon Overlook Trail', 'length': 0.7, 'summary': 'A short trail that leads to incredible views of Zion Canyon.'} "}
         
         # Add some trail_01
         url = APP_URL + '/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138'
@@ -158,7 +156,7 @@ class BasicTests(unittest.TestCase):
         # This is an Error 403 
         url_02 = APP_URL + '/moreinfo/UT/Zion%20National%20Park/asd/qweqw'
         response_02 = self.app.get(url_02)
-        self.assertIn(b'The URL is invalid. Please double check your spelling.', response_02.data)
+        self.assertIn(b'The page you are looking for is not available. Please try again later.', response_02.data)
         
         # This is an Error 404
         url_03 = APP_URL + '/moreinfo//Zion%20National%20Park/37.29839254/-113.0265138'
@@ -188,12 +186,12 @@ class BasicTests(unittest.TestCase):
         # To mock when the API call is down
         url_01 = APP_URL+'parks?states=AZ'
         response_01 = self.app.get(url_01)
-        self.assertIn(b'The URL is invalid. Please double check your spelling.', response_01.data)
+        self.assertIn(b'The page you are looking for is not available. Please try again later.', response_01.data)
         # Test when missing api_key for hiking and weather api call 
         # To mock when the API call is down
         url_02 = APP_URL + '/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138'
         response_02 = self.app.get(url_02)
-        self.assertIn(b'The URL is invalid. Please double check your spelling.', response_02.data)
+        self.assertIn(b'The page you are looking for is not available. Please try again later.', response_02.data)
 
 if __name__ == "__main__":
     unittest.main()

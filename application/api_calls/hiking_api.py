@@ -11,6 +11,7 @@ cached_time = 26280000
 
 load_dotenv('.env')
 
+# CONSTANT
 HIKING_KEY = os.environ.get('HIKING_KEY')
 HIKING_URL = 'https://www.hikingproject.com/data/get-trails'
 
@@ -20,12 +21,14 @@ log = logging.getLogger('root')
 
 
 def get_trails(lat, lon):
-    # see if trail_list is in cache; otherwise, do API call
-    # identifier is lat/long
+    # Check if trail_list is in cache; otherwise, make a request on the API
+    # Indentifier for Hiking API is <lat><long>
     latLon = f'{lat}+{lon}'
     cached_trail_list = cache.fetch((latLon), cache_list.DataList)
+
+    # When there is an exist cached available
     if cached_trail_list:
-        log.info('Hiking API - Return from Cache')  # this will be deleted later
+        log.info('Hiking API - Return from Cache') 
         return cached_trail_list
     else:
         log.info('Hiking API - New API call')
@@ -44,7 +47,6 @@ def get_trails(lat, lon):
                     if trail['name'] and trail['length'] and trail['difficulty'] and trail['summary']:
                         trail_list_w_info['name'] = trail['name']
                         trail_list_w_info['length'] = trail['length']
-                        trail_list_w_info['difficulty'] = trail['difficulty']
                         if trail['summary'] == 'Needs Summary':
                             trail_list_w_info['summary'] = 'N/A'
                         else:

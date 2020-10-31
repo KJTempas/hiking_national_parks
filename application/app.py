@@ -96,7 +96,7 @@ def get_trail_weather(state, park, lat, lon):
             abort(400, 'No data provided.')
     else:
         try:
-            if not state.isalpha() or not park.replace(' ','').isalpha():
+            if not state.isalpha() or not park.replace(' ','').replace('&','').isalpha():
                 raise AppError('The URL is invalid. Please double check your spelling.')
             else:
                 trail_list = hiking_api.get_trails(lat, lon)
