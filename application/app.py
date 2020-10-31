@@ -105,7 +105,7 @@ def get_trail_weather(state, park, lat, lon):
                 
                 return render_template('hikes_weather.html', park=park, trail_list=trail_list, weather_list=weather_list)
         except requests.exceptions.HTTPError as e:
-            log.error(e)
+            log.exception(e)
             abort(403, description =f'The page you are looking for is not available. Please try again later.')
         except Exception as e:
             log.exception(e)
@@ -131,7 +131,7 @@ def invalid_page(error):
 @app.errorhandler(404)
 def missing_params(error):
     log.error(f'Error 404. More detail: {error}')
-    return render_template('errors.html', error_code='404', error_message=error.description)
+    return render_template('errors.html', error_code='404', error_message='The URL is invalid. Please double check your spelling')
 
 @app.route('/savedtrails', methods=['GET', 'POST'])
 def show_saved_trails():
