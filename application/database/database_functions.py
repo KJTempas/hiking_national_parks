@@ -1,3 +1,4 @@
+import peewee
 from peewee import *
 from .models import Trails
 import logging
@@ -8,17 +9,15 @@ log = logging.getLogger('root')
 
 
 # use these functions to preform actions in the database
-# TODO: need to add exception
-
 def add_trail(name, leng, summ, natl_pk, state):
     try:
-
         Trails.create(trail_name=name, trail_len=leng, trail_sum=summ, natl_park=natl_pk,
                       state=state)
         log.info(f'Added Trail: {name}  to the database.')
+    except peewee.IntegrityError as e:
+        log.exception(f'Error occurred. More detail: {e}')
+        raise e
     except Exception as e:
-
-
         log.exception(f'Error occurred. More detail: {e}')
         raise e
 
@@ -36,7 +35,6 @@ def delete_everything():
     """ Deletes all trails from database"""
     try:
         Trails.delete().execute()
-
     except Exception as e:
         log.exception(f'Error occurred. More detail: {e}')
         raise e
@@ -51,8 +49,6 @@ def get_all_saved_trails():
         for i in query_01:
             all_trails.append(i)
             result = str(i)
-
-
         return all_trails
     except Exception as e:
         log.exception(f'Error occurred. More detail: {e}')

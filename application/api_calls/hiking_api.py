@@ -9,7 +9,7 @@ import time
 
 cached_time = 26280000
 
-load_dotenv('application/.env')
+load_dotenv('.env')
 
 HIKING_KEY = os.environ.get('HIKING_KEY')
 HIKING_URL = 'https://www.hikingproject.com/data/get-trails'
@@ -32,7 +32,6 @@ def get_trails(lat, lon):
 
         try:
             query = {'lat': lat, 'lon': lon, 'key': HIKING_KEY}
-
             response = requests.get(HIKING_URL, params=query)
             response.raise_for_status()  # will raise an exception for 400(client) or 500(server) errors
             data = response.json()
@@ -58,6 +57,9 @@ def get_trails(lat, lon):
             cache.add(hiking_trails_data_list_for_cache)
 
             return trail_list
+        except requests.exceptions.HTTPError as e:
+            log.exception(e)
+            raise e
         except Exception as e:
             log.exception(e)
             raise e

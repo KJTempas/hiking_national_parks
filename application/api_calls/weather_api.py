@@ -11,7 +11,7 @@ import time
 
 cached_time = 86400
 
-load_dotenv('application/.env')
+load_dotenv('.env')
 
 # Logger
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s', datefmt='%d-%m-%y %H:%M:%S')
@@ -51,10 +51,7 @@ def store_data(weather):
 
 
 def get_weather(lat, lon):
-    params = {'lat': lat, 'lon': lon, 'exclude': 'current,alerts,hourly,minutely', 'units': 'imperial',
-              'appid': WEATHER_KEY}
-
-    response = requests.get(API_URL, params=params)
+    
 
     # see if trail_list is in cache; otherwise, do API call
     # identifier is lat/long
@@ -66,6 +63,9 @@ def get_weather(lat, lon):
     else:
         log.info('Weather API - new API Call')
         try:
+            params = {'lat': lat, 'lon': lon, 'exclude': 'current,alerts,hourly,minutely', 'units': 'imperial',
+              'appid': WEATHER_KEY}
+            response = requests.get(API_URL, params=params)
             response.raise_for_status()
             data = response.json()
 
@@ -76,6 +76,9 @@ def get_weather(lat, lon):
             cache.add(weather_data_list_for_cache)
             return weather_list
 
+        except requests.exceptions.HTTPError as e:
+            log.exception(e)
+            raise e
         except Exception as e:
             log.exception(f'Error occurred. More detail: {e}')
             log.exception(f'Error Message from request: {response.text}')

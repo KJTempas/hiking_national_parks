@@ -37,7 +37,6 @@
                         <td>{{trail['length']}}</td>
 <!--                        https://stackoverflow.com/questions/51803008/send-table-data-via-form-to-flask-method-->
                         <td name="trail-obj">
-
                             <form method="POST">
                                 <input type="hidden" id="trail-obj" name="trail-obj" value=" {{ trail }} "/>
                                 <button type="submit" style="border:none; border-bottom: 1px solid black;">Save</button>
@@ -76,7 +75,6 @@
                 <td>
                     Min: {{weather['temp']['min']}}F<br>
                     Max: {{weather['temp']['max']}}F<br>
-
                 </td>
                 <td>{{weather['desc']}}</td>
                 <td>{{weather['humidity']}}</td>
