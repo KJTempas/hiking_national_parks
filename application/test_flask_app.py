@@ -158,7 +158,7 @@ class BasicTests(unittest.TestCase):
         # This is an Error 403 
         url_02 = APP_URL + '/moreinfo/UT/Zion%20National%20Park/asd/qweqw'
         response_02 = self.app.get(url_02)
-        self.assertIn(b'The page you are looking for is not available. Please try again later', response_02.data)
+        self.assertIn(b'The URL is invalid. Please double check your spelling.', response_02.data)
         
         # This is an Error 404
         url_03 = APP_URL + '/moreinfo//Zion%20National%20Park/37.29839254/-113.0265138'
@@ -188,12 +188,12 @@ class BasicTests(unittest.TestCase):
         # To mock when the API call is down
         url_01 = APP_URL+'parks?states=AZ'
         response_01 = self.app.get(url_01)
-        self.assertIn(b'The page you are looking for is not available. Please try again later', response_01.data)
+        self.assertIn(b'The URL is invalid. Please double check your spelling.', response_01.data)
         # Test when missing api_key for hiking and weather api call 
         # To mock when the API call is down
         url_02 = APP_URL + '/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138'
         response_02 = self.app.get(url_02)
-        self.assertIn(b'The page you are looking for is not available. Please try again later', response_02.data)
+        self.assertIn(b'The URL is invalid. Please double check your spelling.', response_02.data)
 
 if __name__ == "__main__":
     unittest.main()

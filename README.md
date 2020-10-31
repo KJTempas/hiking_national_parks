@@ -20,7 +20,6 @@ This web application requires memcached and here is the instruction on how to se
 *Helpful article for Windows user to install Memcached, click [here](https://www.journaldev.com/42/how-to-install-memcached-server-on-windows-as-service) to learn more.* 
 
 
-
 ## Flask Web App
 
 1. Download the requirements by running `pip install -r requirements.txt`
