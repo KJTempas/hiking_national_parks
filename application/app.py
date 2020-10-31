@@ -97,8 +97,9 @@ def get_trail_weather(state, park, lat, lon):
     else:
         try:
             tmp_park_name = park.replace(' ','').replace('&','').replace('\'','').replace('-','').replace('`','').replace('ʻ','')
+            # Check if the url consist non-character string
             if not state.isalpha() or not tmp_park_name.isalpha():
-                raise AppError('The URL is invalid. Please double check your spelling.')
+                raise AppError('The URL consists of invalid character. Please double check your spelling befor proceeding.')
             else:
                 trail_list = hiking_api.get_trails(lat, lon)
                 weather_list = weather_api.get_weather(lat, lon)
