@@ -5,13 +5,13 @@ import peewee
 import requests
 import logging
 
+# Custom Exception 
 class AppError(Exception):
     pass
 
 # Logger
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s', datefmt='%d-%m-%y %H:%M:%S')
 log = logging.getLogger('root')
-# from models import *
 app = Flask(__name__)
 
 # CONSTANT
@@ -20,7 +20,7 @@ STATE_DICT = state_name_and_code.get_state_abbrev()
 @app.before_request
 def before_request():
     try:
-        # create db if needed and connect
+        # create db if needed and/or connect
         models.initialize_db()
     except Exception as e:
         log.exception(e)
@@ -37,12 +37,11 @@ def home():
     if request.method == 'POST':
         return redirect(url_for('show_saved_trails'))
     else:
-
         try:
             return render_template('index.html', states_dict=STATE_DICT)
         except Exception as e:
             log.exception(e)
-            abort(500, description =f'Error')
+            abort(500, description =f'The page you are looking for is not available. Please try again later.')
 
 
 @app.route('/parks', methods=['GET', 'POST'])
@@ -53,10 +52,12 @@ def show_national_park():
         try:
             state_input = request.args.get('states')
 
+            # Check if the state_input is valid state
             if state_input not in STATE_DICT.values():
                 raise AppError('User has entered invalid input.')
-    
+            # Make API Call to get state park information
             park_list = natlParks_api.get_response(state_input.lower())
+            # redirect to the state page
             return render_template('park_list.html', park_list=park_list, state=state_input)
         except requests.exceptions.HTTPError as e:
             log.exception(e)
@@ -71,6 +72,7 @@ def show_national_park():
 def get_trail_weather(state, park, lat, lon):
     if request.method == 'POST':
         if request.form.get('trail-obj'):
+            # Convert the `trail-obj` to dictionary format
             trail_obj = eval(request.form.get('trail-obj'))
             # Save the db here
             # then rendered the show_saved_trails page on the return
@@ -82,18 +84,17 @@ def get_trail_weather(state, park, lat, lon):
             except peewee.IntegrityError as e:
                 log.exception(e)
                 abort(400, description=f'{trail_obj["name"]} is already in the database. Please try to save another trail to the system.')
-
             except Exception as e:
                 log.exception(e)
                 abort(500, description=f'{trail_obj["name"]} was not able to add in the database at this moment. '
                                            f'Please try again later.')
         elif request.form.get('back-page'):
+            # redirect to the previous page
             return redirect(url_for('show_national_park', states=state))
         else:
             log.exception(e)
-            abort(400, 'No data provided')
+            abort(400, 'No data provided.')
     else:
-
         try:
             if not state.isalpha() or not park.replace(' ','').isalpha():
                 raise AppError('The URL is invalid. Please double check your spelling.')
@@ -109,26 +110,6 @@ def get_trail_weather(state, park, lat, lon):
             abort(400, description=f'The URL is invalid. Please double check your spelling.')
 
 
-@app.errorhandler(500)
-def internal_error(error):
-    log.error(f'Error 500. More detail: {error}')
-    return render_template('errors.html', error_message=error.description)
-
-
-@app.errorhandler(400)
-def not_found(error):
-    log.error(f'Error 400. More detail: {error}')
-    return render_template('errors.html', error_message=error.description)
-
-@app.errorhandler(403)
-def invalid_page(error):
-    log.error(f'Error 403. More detail: {error}')
-    return render_template('errors.html', error_message=error.description)
-
-@app.errorhandler(404)
-def missing_params(error):
-    log.error(f'Error 404. More detail: {error}')
-    return render_template('errors.html', error_message='The URL is invalid. Please double check your spelling')
 
 @app.route('/savedtrails', methods=['GET', 'POST'])
 def show_saved_trails():
@@ -165,6 +146,28 @@ def delete_trail(trail_name):
     else:
         return render_template('deleted_confirmation.html', trail_name=trail_name)
 
+
+# Error Handler when an exception happen
+@app.errorhandler(500)
+def internal_error(error):
+    log.error(f'Error 500. More detail: {error}')
+    return render_template('errors.html', error_message=error.description)
+
+
+@app.errorhandler(400)
+def not_found(error):
+    log.error(f'Error 400. More detail: {error}')
+    return render_template('errors.html', error_message=error.description)
+
+@app.errorhandler(403)
+def invalid_page(error):
+    log.error(f'Error 403. More detail: {error}')
+    return render_template('errors.html', error_message=error.description)
+
+@app.errorhandler(404)
+def missing_params(error):
+    log.error(f'Error 404. More detail: {error}')
+    return render_template('errors.html', error_message='The URL is invalid. Please double check your spelling')
 
 if __name__ == "__main__":
     app.run()
