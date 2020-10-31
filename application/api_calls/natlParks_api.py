@@ -41,6 +41,9 @@ def get_response(state_input):
 
             cache.add(natlParks_data_list_for_cache)
             return park_list
+        except requests.exceptions.HTTPError as e:
+            log.exception(e)
+            raise e
         except Exception as ex:
             log.exception(ex)
             raise ex

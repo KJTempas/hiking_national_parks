@@ -58,6 +58,7 @@ class BasicTests(unittest.TestCase):
     #     url = APP_URL + '/moreinfo/MN/Voyageurs%20National%20Park/48.48370609/-92.8382913'
 
     #     response = self.app.get(url)
+
     #     self.assertIn(b'National Parks Marathon Project - Voyageurs National Park', response.data)
     #     self.assertIn(b'Overcast Clouds', response.data)
     #     self.assertIn(b'blue', response.data)
@@ -71,106 +72,101 @@ class BasicTests(unittest.TestCase):
     #     self.assertIn(b'Little River Canyon National Preserve', response.data)
         
     
+    # def test_save_trail_already_saved(self):
+    #     # http://localhost:5000/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138
+    #     trail_01 = {'trail-obj': " {'name': 'Angels Landing', 'length': 4.4, 'difficulty': 'black', 'summary': 'One of the most memorable National Park hikes. Heavenly views await at the end of an exposed ridge.'} "}
+    #     trail_02 = {'trail-obj': " {'name': 'Canyon Overlook Trail', 'length': 0.7, 'difficulty': 'blue', 'summary': 'A short trail that leads to incredible views of Zion Canyon.'} "}
+    #     # Add some trail_01
+    #     url = APP_URL + '/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138'
+    #     response = self.app.post(url, data= trail_01, follow_redirects=True)
+        
+    #     # Check if the `trail_01` has been added to the database
+    #     self.assertIn(b'Angels Landing', response.data)
 
+    #     # Add trail_02
+    #     url = APP_URL + '/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138'
+    #     response_02 = self.app.post(url, data= trail_02, follow_redirects=True)
+    #     # Check if the `trail_02` has been added to the database
+    #     self.assertIn(b'Canyon Overlook Trail', response_02.data)
+
+    #     # Add trail_01 again, which might try an error here
+    #     url = APP_URL + '/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138'
+        
+    #     response_03 = self.app.post(url, data= trail_01, follow_redirects=True)
+    #     # Will be redirected to the abort(400) page and have a message saying the trail already exist in the database
+    #     self.assertIn(b'Angels Landing is already in the database. Please try to save another trail to the system', response_03.data)
+        
+
+        
+    # def test_state_page_bad_params_or_non_existent_api_call(self):
+    #     # TODO: comment
+
+    #     # Test when there is an invalid states code being provided
+    #     url_01 = APP_URL+'parks?states=empty'
+    #     response_01 = self.app.get(url_01)
+
+    #     url_02 = APP_URL+'parks?states='
+    #     response_02 = self.app.get(url_02)
+
+    #     url_03 = APP_URL+'parks?states=1221'
+    #     response_03 = self.app.get(url_03)
+
+    #     url_04 = APP_URL+'parks?random=statenamehere'
+    #     response_04 = self.app.get(url_04)
+
+    #     url_05 = APP_URL+'parks'
+    #     response_05 = self.app.get(url_05)
+
+
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_01.data)
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_02.data)
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_03.data)
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_04.data)
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_05.data)
+
+   
+    # def test_get_trail_and_weather_page_with_bad_params(self):
+    #     # TODO: Comment
+        
+    #     url_01 = APP_URL + '/moreinfo/UT/Zion%20National%20Park//'
+    #     response_01 = self.app.get(url_01)
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_01.data)
+        
+    #     url_02 = APP_URL + '/moreinfo/UT/Zion%20National%20Park/asd/qweqw'
+    #     response_02 = self.app.get(url_02)
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_02.data)
+        
+    #     url_03 = APP_URL + '/moreinfo//Zion%20National%20Park/37.29839254/-113.0265138'
+    #     response_03 = self.app.get(url_03)
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_03.data)
+        
+    #     url_04 = APP_URL + '/moreinfo/UT//37.29839254/-113.0265138'
+    #     response_04 = self.app.get(url_04)
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_04.data)
+        
+    #     url_05 = APP_URL + '/moreinfo/UT/123123/37.29839254/-113.0265138'
+    #     response_05 = self.app.get(url_05)
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_05.data)
+
+    #     url_06 = APP_URL + '/moreinfo/49/Test National Park/37.29839254/-113.0265138'
+    #     response_06 = self.app.get(url_06)
+    #     self.assertIn(b'The URL is invalid. Please double check your spelling', response_06.data)
     
-
-    def test_save_trail_already_saved(self):
-        # http://localhost:5000/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138
-        trail_01 = {'trail-obj': " {'name': 'Angels Landing', 'length': 4.4, 'difficulty': 'black', 'summary': 'One of the most memorable National Park hikes. Heavenly views await at the end of an exposed ridge.'} "}
-        trail_02 = {'trail-obj': " {'name': 'Canyon Overlook Trail', 'length': 0.7, 'difficulty': 'blue', 'summary': 'A short trail that leads to incredible views of Zion Canyon.'} "}
-        # Add some trail_01
-        url = APP_URL + '/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138'
-        response = self.app.post(url, data= trail_01, follow_redirects=True)
-        
-        # Check if the `trail_01` has been added to the database
-        self.assertIn(b'Angels Landing', response.data)
-
-        # Add trail_02
-        url = APP_URL + '/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138'
-        response_02 = self.app.post(url, data= trail_02, follow_redirects=True)
-        # Check if the `trail_02` has been added to the database
-        self.assertIn(b'Canyon Overlook Trail', response_02.data)
-
-        # Add trail_01 again, which might try an error here
-        url = APP_URL + '/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138'
-        
-        response_03 = self.app.post(url, data= trail_01, follow_redirects=True)
-        # Will be redirected to the abort(400) page and have a message saying the trail already exist in the database
-        self.assertIn(b'Angels Landing is already in the database. Please try to save another trail to the system', response_03.data)
-        
-
-        
-    # def test_state_page_bad_params(self):
-    #     # Should we be checking it on flask app instead ?if so what exception should be thrown? 
-    #     # you should not throw exceptions from the flask routes. The back end methods may throw exceptions to represent an error condition
-    #     # and your flask route handler would have try-except for that 
-    #     # Always return a HTTP response, even if it's a 500 response. 
-    #     url = APP_URL+'parks?states=empty'
-    #     # make the request
-    #     # your server should return a 400 bad request or a 404 not found for this request.  So make the request and assert the status code 
-    #     # is as expected. 
-    #     self.fail()
-
-    # # TODO test for bad url or non-existent api call like state that does not exist etc...
-    # # test these URLs, the test would be very similar to the one above
-    # #         url = APP_URL+'parks?somethingelse=whatever'  
-    # #         url = APP_URL+'parks'  
-
-    # def test_invalid_state_in_state_page(self):
-    #     self.fail()
-
-    # def test_invalid_lat_lon_on_api_call(self):
-    #     # !QUESTION: Not sure where to catch the exception where the lat and long is empty like this `http://localhost:5000/moreinfo/AL/Freedom%20Riders%20National%20Monument//` only able to catch the exception when the lat and lon is random number
-    #     # !QUESTION: Should I be using the self.app.get(url) and mock the abort page here too?
-    #     # you don't need to mock the abort page. Again make the request and check you get a response with the appropriate status code
-    #     # the flask app route needs to be checking the parameters and returning 400 or 404 if they don't make sense
-    #     self.fail()
-
-    # def test_api_call_is_down(self):
-    #     # !QUESTION: for this one will this be the abort(500) page? or we will need to add an additional exception in the flask app?
-    #     # mock the api call(s) to return error or raise exception, whatever they do if the server is down
-    #     # make a call
-    #     # assert 500 error code with the message you set. 
-    #     self.fail()
-
+    @patch('app.natlParks_api.NTL_PARK_KEY', return_value='')
+    @patch('app.hiking_api.HIKING_KEY', return_value='')
+    @patch('app.weather_api.WEATHER_KEY', return_value='')
+    def test_api_call_is_down(self, mock_national_park_api_key,mock_hiking_api_key, mock_weather_api_key):
+        # Test when missing api_key for national park api call 
+        # To mock when the API call is down
+        url_01 = APP_URL+'parks?states=AZ'
+        response_01 = self.app.get(url_01)
+        self.assertIn(b'The page you are looking for is not available. Please try again later', response_01.data)
+        # Test when missing api_key for hiking and weather api call 
+        # To mock when the API call is down
+        url_02 = APP_URL + '/moreinfo/UT/Zion%20National%20Park/37.29839254/-113.0265138'
+        response_02 = self.app.get(url_02)
+        self.assertIn(b'The page you are looking for is not available. Please try again later', response_02.data)
 
 if __name__ == "__main__":
     unittest.main()
 
-
-
-#
-# # code.py
-#
-# from flask import abort
-#
-#
-# def my_function():
-#     abort(400, "error")
-
-# # test.py
-#
-# import unittest
-# from unittest.mock import patch
-# from werkzeug import exceptions
-#
-# import code  # Your code file code.py
-#
-#
-# class Tests(unittest.TestCase):
-#
-#     @patch('code.abort')
-#     def test_one(self, mock_abort):
-#         code.my_function()
-#         mock_abort.assert_called_once_with(400, 'error')
-#
-#     def test_two(self):
-#         with self.assertRaises(exceptions.BadRequest):
-#             code.my_function()
-#
-#     def test_three(self):
-#         with self.assertRaisesRegexp(exceptions.BadRequest, '400 Bad Request: error'):
-#             code.my_function()
-#
-#
-# unittest.main(argv=[''], verbosity=2, exit=False)

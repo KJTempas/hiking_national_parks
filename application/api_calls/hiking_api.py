@@ -32,7 +32,6 @@ def get_trails(lat, lon):
 
         try:
             query = {'lat': lat, 'lon': lon, 'key': HIKING_KEY}
-
             response = requests.get(HIKING_URL, params=query)
             response.raise_for_status()  # will raise an exception for 400(client) or 500(server) errors
             data = response.json()
@@ -58,6 +57,9 @@ def get_trails(lat, lon):
             cache.add(hiking_trails_data_list_for_cache)
 
             return trail_list
+        except requests.exceptions.HTTPError as e:
+            log.exception(e)
+            raise e
         except Exception as e:
             log.exception(e)
             raise e
