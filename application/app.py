@@ -97,7 +97,7 @@ def get_trail_weather(state, park, lat, lon):
     else:
         try:
             tmp_park_name = park.replace(' ','').replace('&','').replace('\'','').replace('-','').replace('`','').replace('ʻ','')
-            # Check if the url consist non-character string
+            # Check if the url consists of an invalid character 
             if not state.isalpha() or not tmp_park_name.isalpha():
                 raise AppError('The URL consists of invalid character. Please double check your spelling befor proceeding.')
             else:
