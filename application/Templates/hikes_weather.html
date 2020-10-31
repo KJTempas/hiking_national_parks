@@ -5,7 +5,7 @@
 
 <div class="content">
 
-    <div class="jumbotron">
+    <div class="jumbotron bg-success text-white">
     <h1 class="display-4">National Park and Trail Manager</h1>
 
     <hr class="my-4">
@@ -14,8 +14,9 @@
     </div>
 
     {% if trail_list %}
-    <p><h2>Available Trail</h2></p>
-
+    <p><h2>Available Trails</h2></p>
+    <i class="fas fa-hiking"></i><!--icons from font awesome-->
+    <i class="fas fa-mountain"></i>
     <br>
         <form method="POST">
             <table class="table table-bordered">
@@ -56,16 +57,17 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h2>Weather Forecast at {{park}}</h2>
+            
         </div>
     </div>
 
     <table class="table table-bordered">
         <tr>
             <th scope="col">Forecast Date</th>
-            <th scope="col">Temperature</th>
-            <th scope="col">Description</th>
-            <th scope="col">Humidity</th>
-            <th scope="col">Rain</th>
+            <th scope="col">Temperature <i class="fas fa-temperature-high"></i></th>
+            <th scope="col"><i class="fas fa-sun"></i> Description  <i class="fas fa-cloud"></i></th>
+            <th scope="col">Humidity <i class="fas fa-tint"></i></th>
+            <th scope="col">Rain  <i class="fas fa-cloud-rain"></i></th>
         </tr>
         {% for weather in weather_list %}
             <tr>
@@ -91,7 +93,9 @@
     {% endif %}
 
     <form method="POST" >
-        <button type="submit" name="back-page" class="btn btn-secondary btn-lg" value="back-page">Back to Previous Page</button>
+
+        <button type="submit" name="back-page" class="btn btn-info btn-lg" value="back-page">Back to Previous Page</button>
+
         <input type="hidden" name="state" value="{{ state }}" />
     </form>
 

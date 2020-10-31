@@ -23,8 +23,9 @@ def before_request():
         # create db if needed and connect
         models.initialize_db()
     except Exception as e:
+        log.error(e)
         abort(400, description=f'Page not found')
-
+       
 
 @app.teardown_request
 def teardown_request(exception):
@@ -37,10 +38,11 @@ def home():
     if request.method == 'POST':
         return redirect(url_for('show_saved_trails'))
     else:
+
         try:
             return render_template('index.html', states_dict=STATE_DICT)
-        # TODO here
         except Exception as e:
+            log.exception(e)
             abort(500, description =f'Error')
 
 
@@ -49,6 +51,7 @@ def show_national_park():
     if request.method == 'POST':
         return redirect(url_for('home'))
     else:
+
 
         try:
             state_input = request.args.get('states')
@@ -80,14 +83,17 @@ def get_trail_weather(state, park, lat, lon):
                 database_functions.add_trail(name=trail_obj['name'], leng=trail_obj['length'],
                                              summ=trail_obj['summary'],
                                              natl_pk=park, state=state)
-
                 return redirect(url_for('show_saved_trails'))
             except peewee.IntegrityError as e:
+
                 log.exception(e)
+
                 abort(400, description=f'{trail_obj["name"]} is already in the database. Please try to save another trail to the system.')
 
             except Exception as e:
+
                 log.exception(e)
+
                 abort(500, description=f'{trail_obj["name"]} was not able to add in the database at this moment. '
                                            f'Please try again later.')
         elif request.form.get('back-page'):
@@ -96,6 +102,7 @@ def get_trail_weather(state, park, lat, lon):
             log.exception(e)
             abort(400, 'No data provided')
     else:
+
         try:
             if not state.isalpha() or not park.replace(' ','').isalpha():
                 raise AppError('The URL is invalid. Please double check your spelling.')
@@ -110,6 +117,7 @@ def get_trail_weather(state, park, lat, lon):
         except Exception as e:
             log.exception(e)
             abort(400, description=f'The URL is invalid. Please double check your spelling.')
+
 
 
 @app.errorhandler(500)
@@ -142,28 +150,27 @@ def show_saved_trails():
             try:
                 selected_row = request.form.get('selected-row')
                 database_functions.delete_trail_by_id(eval(selected_row)['id'])
-
                 return redirect(url_for('delete_trail', trail_name=eval(selected_row)['name']))
             except Exception as e:
+
                 log.exception(e)
+
                 abort(500,
                       description=f'{eval(selected_row)["name"]} was not able to be deleted from the database at this '
                                   f'moment. '
                                   f'Please try again later.')
-
     else:
         try:
             # Mainly retrieve the trail info from db
             saved_trails = database_functions.get_all_saved_trails()
-
             # pass bookmark_list to the template
             return render_template('save_trail.html', bookmark_list=saved_trails)
         except Exception as e:
             log.exception(e)
             abort(500,
                   description=f'Unable to retrieved saved trail at this moment. Please try again later.')
-
-
+            
+            
 @app.route('/deleted/<trail_name>', methods=['GET', 'POST'])
 def delete_trail(trail_name):
     if request.method == 'POST':
